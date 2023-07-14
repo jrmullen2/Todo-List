@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div id="left">
+      <div id="all">All</div>
+      <div id="today">Today</div>
+      <div id="upcoming">Upcoming</div>
+      <div id="projects">Projects</div>
+    </div>
+    <div id="right">
+      <form action="index.html" method="post">
+        <fieldset>
+          <label for="userTitle">Title:</label>
+          <input
+            type="text"
+            name="userTitle"
+            id="userTitle"
+            placeholder="e.g. Walk Dog"
+          />
+          <label for="userDescrip">Description:</label>
+          <input
+            type="text"
+            name="userDescrip"
+            id="userDescrip"
+            placeholder="e.g. Walk dog around the block."
+          />
+          <label for="userDue">Due Date:</label>
+          <input type="date" name="userDue" id="userDue" />
+          <label for="userPriority">Priority:</label>
+          <select name="userPriority" id="userPriority">
+            <option value="high">High</option>
+            <option value="middle">Middle</option>
+            <option value="low">Low</option>
+          </select>
+          <label for="userNotes">Notes:</label>
+          <textarea name="userNotes" id="userNotes"></textarea>
+        </fieldset>
+        <button type="button" id="submitButton">Submit</button>
+      </form>
+      <button id="plus">+</button>;
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
