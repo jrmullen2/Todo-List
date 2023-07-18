@@ -1,6 +1,6 @@
 import "./style.css";
-import { createTodo } from "./createTask";
 import { displayTask } from "./taskDisplay";
+import { categoryCheck } from "./categoryCheck";
 
 const userTitle = document.getElementById("userTitle");
 const userDescrip = document.getElementById("userDescrip");
@@ -10,14 +10,15 @@ const userNotes = document.getElementById("userNotes");
 const add = document.getElementById("plus");
 const userForm = document.getElementById("userForm");
 const submit = document.getElementById("submitButton");
-const editButtons = document.querySelectorAll(".edit");
-const deleteButtons = document.querySelectorAll(".delete");
+const whichCategory = categoryCheck();
 
 add.addEventListener("click", () => {
   userForm.style.display = "block";
+  whichCategory.dateMin();
 });
 submit.addEventListener("click", () => {
   userForm.style.display = "none";
+  whichCategory.sortDiv();
   displayTask();
   setDefault();
 });
@@ -29,22 +30,3 @@ function setDefault() {
   userPriority.value = userPriority.defaultValue;
   userNotes.value = userNotes.defaultValue;
 }
-
-editButtons.forEach((div) => {
-  div.addEventListener("click", () => {
-    userTitle.value = createTodo().titleInput;
-    userDescrip.value = createTodo().descripInput;
-    userDue.value = createTodo().dueInput;
-    userPriority.value = createTodo().priorityInput;
-    userNotes.value = createTodo().notesInput;
-    userForm.style.display = "flex";
-  });
-});
-deleteButtons.forEach((div) => {
-  div.addEventListener("click", () => {
-    rightDiv.removeChild(taskDiv);
-    setDefault();
-  });
-});
-
-// finish organzing
