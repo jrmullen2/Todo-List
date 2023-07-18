@@ -1,7 +1,11 @@
 import { createTodo } from "./createTask";
 import edit from "./images/edit-box-icon.png";
 import trash from "./images/trash-bin-icon.png";
+import { categoryCheck } from "./categoryCheck";
 export function displayTask() {
+  const allTask = document.getElementById("allTask");
+  const todayTask = document.getElementById("todayTask");
+  const upcomingTask = document.getElementById("upcomingTask");
   const userTitle = document.getElementById("userTitle");
   const userDescrip = document.getElementById("userDescrip");
   const userDue = document.getElementById("userDue");
@@ -10,7 +14,6 @@ export function displayTask() {
   const submit = document.getElementById("submitButton");
   const confirm = document.getElementById("confirm");
   const userForm = document.getElementById("userForm");
-  const rightContainer = document.getElementById("rightContainer");
   const taskDiv = document.createElement("div");
   const checkDiv = document.createElement("input");
   const titleDiv = document.createElement("div");
@@ -24,6 +27,8 @@ export function displayTask() {
   const editImage = new Image();
   const deleteDiv = document.createElement("div");
   const deleteImage = new Image();
+  const whichCategory = categoryCheck();
+
   let currentTask = createTodo().newTask;
   let titleInput = userTitle.value;
   let descripInput = userDescrip.value;
@@ -113,8 +118,7 @@ export function displayTask() {
   taskDiv.appendChild(dateDiv);
   taskDiv.appendChild(editDiv);
   taskDiv.appendChild(deleteDiv);
-  rightContainer.appendChild(taskDiv);
-  rightContainer.appendChild(detailsHolder);
+  whichCategory.sortDiv();
 
   return currentTask;
 }

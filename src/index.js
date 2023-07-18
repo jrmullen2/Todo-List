@@ -10,7 +10,18 @@ const userNotes = document.getElementById("userNotes");
 const add = document.getElementById("plus");
 const userForm = document.getElementById("userForm");
 const submit = document.getElementById("submitButton");
-const whichCategory = categoryCheck();
+const rightContainer = document.getElementById("rightContainer");
+const allTask = document.createElement("div");
+const todayTask = document.createElement("div");
+const upcomingTask = document.createElement("div");
+const allDiv = document.getElementById("allDiv");
+const todayDiv = document.getElementById("todayDiv");
+const upcomingDiv = document.getElementById("upcomingDiv");
+let whichCategory = categoryCheck();
+
+allTask.id = "allTask";
+todayTask.id = "todayTask";
+upcomingTask.id = "upcomingTask";
 
 add.addEventListener("click", () => {
   userForm.style.display = "block";
@@ -18,7 +29,6 @@ add.addEventListener("click", () => {
 });
 submit.addEventListener("click", () => {
   userForm.style.display = "none";
-  whichCategory.sortDiv();
   displayTask();
   setDefault();
 });
@@ -30,3 +40,22 @@ function setDefault() {
   userPriority.value = userPriority.defaultValue;
   userNotes.value = userNotes.defaultValue;
 }
+
+allDiv.addEventListener("click", () => {
+  if (rightContainer.firstChild !== allTask) {
+    rightContainer.removeChild(rightContainer.firstChild);
+    rightContainer.appendChild(allTask);
+  }
+});
+todayDiv.addEventListener("click", () => {
+  if (rightContainer.firstChild !== todayTask) {
+    rightContainer.removeChild(rightContainer.firstChild);
+    rightContainer.appendChild(todayTask);
+  }
+});
+upcomingDiv.addEventListener("click", () => {
+  if (rightContainer.firstChild !== upcomingTask) {
+    rightContainer.removeChild(rightContainer.firstChild);
+    rightContainer.appendChild(upcomingTask);
+  }
+});
