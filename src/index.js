@@ -2,6 +2,12 @@ import "./style.css";
 import { displayTask } from "./taskDisplay";
 import { categoryCheck } from "./categoryCheck";
 
+const allDiv = document.getElementById("allDiv");
+const todayDiv = document.getElementById("todayDiv");
+const upcomingDiv = document.getElementById("upcomingDiv");
+const allTask = document.getElementById("allTask");
+const todayTask = document.getElementById("todayTask");
+const upcomingTask = document.getElementById("upcomingTask");
 const userTitle = document.getElementById("userTitle");
 const userDescrip = document.getElementById("userDescrip");
 const userDue = document.getElementById("userDue");
@@ -10,18 +16,8 @@ const userNotes = document.getElementById("userNotes");
 const add = document.getElementById("plus");
 const userForm = document.getElementById("userForm");
 const submit = document.getElementById("submitButton");
-const rightContainer = document.getElementById("rightContainer");
-const allTask = document.createElement("div");
-const todayTask = document.createElement("div");
-const upcomingTask = document.createElement("div");
-const allDiv = document.getElementById("allDiv");
-const todayDiv = document.getElementById("todayDiv");
-const upcomingDiv = document.getElementById("upcomingDiv");
-let whichCategory = categoryCheck();
 
-allTask.id = "allTask";
-todayTask.id = "todayTask";
-upcomingTask.id = "upcomingTask";
+let whichCategory = categoryCheck();
 
 add.addEventListener("click", () => {
   userForm.style.display = "block";
@@ -32,6 +28,21 @@ submit.addEventListener("click", () => {
   displayTask();
   setDefault();
 });
+allDiv.addEventListener("click", () => {
+  upcomingTask.style.display = "none";
+  todayTask.style.display = "none";
+  allTask.style.display = "block";
+});
+todayDiv.addEventListener("click", () => {
+  allTask.style.display = "none";
+  upcomingTask.style.display = "none";
+  todayTask.style.display = "block";
+});
+upcomingDiv.addEventListener("click", () => {
+  allTask.style.display = "none";
+  todayTask.style.display = "none";
+  upcomingTask.style.display = "block";
+});
 
 function setDefault() {
   userTitle.value = userTitle.defaultValue;
@@ -40,22 +51,3 @@ function setDefault() {
   userPriority.value = userPriority.defaultValue;
   userNotes.value = userNotes.defaultValue;
 }
-
-allDiv.addEventListener("click", () => {
-  if (rightContainer.firstChild !== allTask) {
-    rightContainer.removeChild(rightContainer.firstChild);
-    rightContainer.appendChild(allTask);
-  }
-});
-todayDiv.addEventListener("click", () => {
-  if (rightContainer.firstChild !== todayTask) {
-    rightContainer.removeChild(rightContainer.firstChild);
-    rightContainer.appendChild(todayTask);
-  }
-});
-upcomingDiv.addEventListener("click", () => {
-  if (rightContainer.firstChild !== upcomingTask) {
-    rightContainer.removeChild(rightContainer.firstChild);
-    rightContainer.appendChild(upcomingTask);
-  }
-});

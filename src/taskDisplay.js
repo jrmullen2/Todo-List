@@ -3,13 +3,9 @@ import edit from "./images/edit-box-icon.png";
 import trash from "./images/trash-bin-icon.png";
 import { categoryCheck } from "./categoryCheck";
 export function displayTask() {
-  const rightContainer = document.getElementById("rightContainer");
-  const allDiv = document.getElementById("allDiv");
-  const todayDiv = document.getElementById("todayDiv");
-  const upcomingDiv = document.getElementById("upcomingDiv");
-  const allTask = document.createElement("div");
-  const todayTask = document.createElement("div");
-  const upcomingTask = document.createElement("div");
+  const allTask = document.getElementById("allTask");
+  const todayTask = document.getElementById("todayTask");
+  const upcomingTask = document.getElementById("upcomingTask");
   const userTitle = document.getElementById("userTitle");
   const userDescrip = document.getElementById("userDescrip");
   const userDue = document.getElementById("userDue");
@@ -55,7 +51,6 @@ export function displayTask() {
   let notesInput = userNotes.value;
 
   //setting up inital taskDiv and its contents
-  allTask.textContent = "All";
   checkDiv1.type = "checkbox";
   titleDiv1.textContent = currentTask.title;
   detailsDiv1.textContent = "Details";
@@ -212,19 +207,5 @@ export function displayTask() {
     upcomingTask.appendChild(taskDiv1);
     upcomingTask.appendChild(detailsHolder1);
   }
-
-  allDiv.addEventListener("click", () => {
-    rightContainer.removeChild(rightContainer.lastElementChild);
-    rightContainer.appendChild(allTask);
-  });
-  todayDiv.addEventListener("click", () => {
-    rightContainer.removeChild(rightContainer.lastElementChild);
-    rightContainer.appendChild(todayTask);
-  });
-  upcomingDiv.addEventListener("click", () => {
-    rightContainer.removeChild(rightContainer.lastElementChild);
-    rightContainer.appendChild(upcomingTask);
-  });
-
-  return allTask;
 }
+// hardcode today upcoming and all divs into index.html test that out and mess with their display values
