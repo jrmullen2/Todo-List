@@ -5,10 +5,8 @@ export function displayProject(count) {
   //Display when user wants to add new tasks to a project;
   const projects = document.getElementById("projects");
   const projectsDiv = document.getElementById("projectsDiv");
-  const projectName = document.createElement("div");
   const projectDisplay = document.createElement("div");
   projectDisplay.style.display = "block";
-  const addTaskButton = document.createElement("button");
   const userTitle = document.getElementById("userTitle");
   const userDescrip = document.getElementById("userDescrip");
   const userDue = document.getElementById("userDue");
@@ -33,10 +31,7 @@ export function displayProject(count) {
   const deleteImage3 = new Image();
   let currentTask2 = createTodo().newTask;
 
-  addTaskButton.textContent = "Add Task";
-  projectName.classList.add("projectName");
-  projectName.textContent = projectInput.value;
-  projectDisplay.classList.add("projectDisplay" + count);
+  projectDisplay.classList.add("p" + count);
   checkDiv3.type = "checkbox";
   titleDiv3.textContent = currentTask2.title;
   detailsDiv3.textContent = "Details";
@@ -107,14 +102,6 @@ export function displayProject(count) {
     dateDiv3.textContent = currentTask2.due;
     setDefault();
   });
-  projectName.addEventListener("click", () => {
-    projectDisplay.style.display = "block";
-  });
-  addTaskButton.addEventListener("click", () => {
-    submit1.style.display = "none";
-    submit2.style.display = "block";
-    userForm.style.display = "block";
-  });
 
   detailsHolder3.appendChild(detailsPriority3);
   detailsHolder3.appendChild(detailsDescrip3);
@@ -128,10 +115,6 @@ export function displayProject(count) {
   taskDiv3.appendChild(editDiv3);
   taskDiv3.appendChild(deleteDiv3);
   projectDisplay.appendChild(taskDiv3);
-  projectDisplay.appendChild(detailsDiv3);
-  projectDisplay.appendChild(addTaskButton);
-  projectsDiv.appendChild(projectName);
   projects.appendChild(projectDisplay);
-
-  return taskDiv3;
+  projects.appendChild(detailsHolder3);
 }
