@@ -1,28 +1,20 @@
 //Checks the date of each task and gives it a class of today or upcoming and a class of all
 export function categoryCheck() {
   const date = new Date();
-  const taskDiv = document.getElementById("taskDiv");
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-  let currentDate = day + "-" + month + "-" + year;
+  let currentDate = date.toISOString().slice(0, 10);
+  const userDue = document.getElementById("userDue");
+
   function dateMin() {
-    const userDue = document.getElementById("userDue");
     userDue.setAttribute("min", currentDate);
+    userDue.setAttribute("value", currentDate);
   }
   function sortDiv() {
+    console.log(userDue.value);
+    console.log(currentDate);
     if (userDue.value === currentDate) {
-      taskDiv.classList.add("today");
-      allTask.appendChild(taskDiv);
-      allTask.appendChild(detailsHolder);
-      todayTask.appendChild(taskDiv);
-      todayTask.appendChild(detailsHolder);
+      return "today";
     } else if (userDue.value !== currentDate) {
-      taskDiv.classList.add("upcoming");
-      allTask.appendChild(taskDiv);
-      allTask.appendChild(detailsHolder);
-      upcomingTask.appendChild(taskDiv);
-      upcomingTask.appendChild(detailsHolder);
+      return "upcoming";
     }
   }
   //Moves old tasks out of upcoming and today
@@ -45,4 +37,4 @@ export function categoryCheck() {
 
   return { dateMin, sortDiv, moveOld };
 }
-// make left div clicks display
+// make left div clicks display. Currently an issue where classlist is undefined according to browser
