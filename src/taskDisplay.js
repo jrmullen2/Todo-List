@@ -11,7 +11,8 @@ export function displayTask() {
   const userDue = document.getElementById("userDue");
   const userPriority = document.getElementById("userPriority");
   const userNotes = document.getElementById("userNotes");
-  const submit = document.getElementById("submitButton");
+  const submit1 = document.getElementById("submitButton1");
+  const submit2 = document.getElementById("submitButton2");
   const confirm = document.getElementById("confirm");
   const userForm = document.getElementById("userForm");
   const taskDiv1 = document.createElement("div");
@@ -19,23 +20,26 @@ export function displayTask() {
   const titleDiv1 = document.createElement("div");
   const detailsDiv1 = document.createElement("div");
   const detailsHolder1 = document.createElement("div");
+  const detailsTitle1 = document.createElement("div");
   const detailsPriority1 = document.createElement("div");
   const detailsDescrip1 = document.createElement("p");
   const detailsNotes1 = document.createElement("p");
-  const detailsNotes2 = document.createElement("p");
   const dateDiv1 = document.createElement("div");
   const editDiv1 = document.createElement("div");
   const editImage1 = new Image();
   const deleteDiv1 = document.createElement("div");
   const deleteImage1 = new Image();
+  const currentTask = createTodo().newTask;
   //Cloning taskDiv1 and its contents so allDiv can display the same tasks as upcomingDiv and todayDiv
   const taskDiv2 = document.createElement("div");
   const checkDiv2 = document.createElement("input");
   const titleDiv2 = document.createElement("div");
   const detailsDiv2 = document.createElement("div");
   const detailsHolder2 = document.createElement("div");
+  const detailsTitle2 = document.createElement("div");
   const detailsPriority2 = document.createElement("div");
   const detailsDescrip2 = document.createElement("p");
+  const detailsNotes2 = document.createElement("p");
   const dateDiv2 = document.createElement("div");
   const editDiv2 = document.createElement("div");
   const editImage2 = new Image();
@@ -43,17 +47,11 @@ export function displayTask() {
   const deleteImage2 = new Image();
   const whichCategory = categoryCheck();
 
-  let currentTask = createTodo().newTask;
-  let titleInput = userTitle.value;
-  let descripInput = userDescrip.value;
-  let dueInput = userDue.value;
-  let priorityInput = userPriority.value;
-  let notesInput = userNotes.value;
-
   //setting up inital taskDiv and its contents
   checkDiv1.type = "checkbox";
   titleDiv1.textContent = currentTask.title;
   detailsDiv1.textContent = "Details";
+  detailsTitle1.textContent = "Title: " + currentTask.title;
   detailsPriority1.textContent = "Priority: " + currentTask.priority;
   detailsDescrip1.textContent = "Description: " + currentTask.descrip;
   detailsNotes1.textContent = "Notes: " + currentTask.notes;
@@ -65,6 +63,7 @@ export function displayTask() {
   checkDiv2.type = "checkbox";
   titleDiv2.textContent = currentTask.title;
   detailsDiv2.textContent = "Details";
+  detailsTitle2.textContent = "Title: " + currentTask.title;
   detailsPriority2.textContent = "Priority: " + currentTask.priority;
   detailsDescrip2.textContent = "Description: " + currentTask.descrip;
   detailsNotes2.textContent = "Notes: " + currentTask.notes;
@@ -78,10 +77,11 @@ export function displayTask() {
   todayTask.id = "todayTask";
   upcomingTask.id = "upcomingTask";
   taskDiv1.classList.add("taskDiv1");
-  checkDiv1.id = "checkDiv";
-  titleDiv1.id = "titleDiv";
+  checkDiv1.id = "checkDiv1";
+  titleDiv1.id = "titleDiv1";
   detailsHolder1.id = "dHolder1";
   detailsDiv1.id = "detailsDiv1";
+  detailsTitle1.id = "detailsTitle1";
   detailsPriority1.id = "detailsPriority1";
   detailsNotes1.id = "detailsNotes1";
   dateDiv1.id = "dateDiv1";
@@ -91,9 +91,10 @@ export function displayTask() {
   deleteImage1.classList.add("taskImg");
   taskDiv2.classList.add("taskDiv2");
   checkDiv2.id = "checkDiv2";
-  titleDiv2.classList.id = "titleDiv2";
+  titleDiv2.id = "titleDiv2";
   detailsHolder2.id = "dHolder2";
   detailsDiv2.id = "detailsDiv2";
+  detailsTitle2.id = "detailsTitle2";
   detailsPriority2.id = "detailsPriority2";
   detailsNotes2.id = "detailsNotes2";
   dateDiv2.id = "dateDiv2";
@@ -103,15 +104,15 @@ export function displayTask() {
   deleteImage2.classList.add("taskImg");
 
   detailsDiv1.addEventListener("click", () => {
-    if (detailsHolder1.style.display !== "block") {
-      detailsHolder1.style.display = "block";
+    if (detailsHolder1.style.display !== "flex") {
+      detailsHolder1.style.display = "flex";
     } else {
       detailsHolder1.style.display = "none";
     }
   });
   detailsDiv2.addEventListener("click", () => {
-    if (detailsHolder2.style.display !== "block") {
-      detailsHolder2.style.display = "block";
+    if (detailsHolder2.style.display !== "flex") {
+      detailsHolder2.style.display = "flex";
     } else {
       detailsHolder2.style.display = "none";
     }
@@ -129,50 +130,61 @@ export function displayTask() {
     deleteImage2.style.opacity = 0.5;
   });
   editDiv1.addEventListener("click", () => {
-    userTitle.value = titleInput;
-    userDescrip.value = descripInput;
-    userDue.value = dueInput;
-    userPriority.value = priorityInput;
-    userNotes.value = notesInput;
-    submit.style.display = "none";
+    userTitle.value = currentTask._title;
+    userDescrip.value = currentTask._descrip;
+    userDue.value = currentTask._due;
+    userPriority.value = currentTask._priority;
+    userNotes.value = currentTask._notes;
+    submit1.style.display = "none";
+    submit2.style.display = "none";
     userForm.style.display = "flex";
     confirm.style.display = "block";
   });
   editDiv2.addEventListener("click", () => {
-    userTitle.value = titleInput;
-    userDescrip.value = descripInput;
-    userDue.value = dueInput;
-    userPriority.value = priorityInput;
-    userNotes.value = notesInput;
-    submit.style.display = "none";
+    userTitle.value = currentTask._title;
+    userDescrip.value = currentTask._descrip;
+    userDue.value = currentTask._due;
+    userPriority.value = currentTask._priority;
+    userNotes.value = currentTask._notes;
+    submit1.style.display = "none";
+    submit2.style.display = "none";
     userForm.style.display = "flex";
     confirm.style.display = "block";
   });
   deleteDiv1.addEventListener("click", () => {
-    rightContainer.removeChild(taskDiv);
+    taskDiv1.parentElement.removeChild(taskDiv1);
   });
   deleteDiv2.addEventListener("click", () => {
-    rightContainer.removeChild(taskDiv);
+    taskDiv2.parentElement.removeChild(taskDiv2);
   });
   confirm.addEventListener("click", () => {
     //resetting form to original state after confirming changes
     userForm.style.display = "none";
     confirm.style.display = "none";
-    submit.style.display = "block";
+    submit1.style.display = "block";
+    submit2.style.display = "block";
     currentTask._title = userTitle.value;
     currentTask._descrip = userDescrip.value;
     currentTask._due = userDue.value;
     currentTask._priority = userPriority.value;
     currentTask._notes = userNotes.value;
-    titleDiv.textContent = currentTask.title;
-    detailsDiv.textContent = "Details";
-    detailsPriority.textContent = "Priority: " + currentTask.priority;
-    detailsDescrip.textContent = "Description: " + currentTask.descrip;
-    detailsNotes.textContent = "Notes: " + currentTask.notes;
-    dateDiv.textContent = currentTask.due;
-    setDefault();
+    titleDiv1.textContent = currentTask.title;
+    detailsDiv1.textContent = "Details";
+    detailsTitle1.textContent = "Title:" + currentTask.title;
+    detailsPriority1.textContent = "Priority: " + currentTask.priority;
+    detailsDescrip1.textContent = "Description: " + currentTask.descrip;
+    detailsNotes1.textContent = "Notes: " + currentTask.notes;
+    dateDiv1.textContent = currentTask.due;
+    titleDiv2.textContent = currentTask.title;
+    detailsDiv2.textContent = "Details";
+    detailsTitle2.textContent = "Title:" + currentTask.title;
+    detailsPriority2.textContent = "Priority: " + currentTask.priority;
+    detailsDescrip2.textContent = "Description: " + currentTask.descrip;
+    detailsNotes2.textContent = "Notes: " + currentTask.notes;
+    dateDiv2.textContent = currentTask.due;
+    setDefault1();
   });
-
+  detailsHolder1.appendChild(detailsTitle1);
   detailsHolder1.appendChild(detailsPriority1);
   detailsHolder1.appendChild(detailsDescrip1);
   detailsHolder1.appendChild(detailsNotes1);
@@ -184,6 +196,7 @@ export function displayTask() {
   taskDiv1.appendChild(dateDiv1);
   taskDiv1.appendChild(editDiv1);
   taskDiv1.appendChild(deleteDiv1);
+  detailsHolder2.appendChild(detailsTitle2);
   detailsHolder2.appendChild(detailsPriority2);
   detailsHolder2.appendChild(detailsDescrip2);
   detailsHolder2.appendChild(detailsNotes2);
@@ -207,5 +220,12 @@ export function displayTask() {
     upcomingTask.appendChild(taskDiv1);
     upcomingTask.appendChild(detailsHolder1);
   }
+
+  function setDefault1() {
+    userTitle.value = userTitle.defaultValue;
+    userDescrip.value = userDescrip.defaultValue;
+    userDue.value = userDue.defaultValue;
+    userPriority.value = userPriority.defaultValue;
+    userNotes.value = userNotes.defaultValue;
+  }
 }
-// hardcode today upcoming and all divs into index.html test that out and mess with their display values

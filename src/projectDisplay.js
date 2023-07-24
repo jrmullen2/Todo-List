@@ -4,7 +4,6 @@ import trash from "./images/trash-bin-icon.png";
 export function displayProject(count) {
   //Display when user wants to add new tasks to a project;
   const projects = document.getElementById("projects");
-  const projectsDiv = document.getElementById("projectsDiv");
   const projectDisplay = document.createElement("div");
   projectDisplay.style.display = "block";
   const userTitle = document.getElementById("userTitle");
@@ -20,6 +19,7 @@ export function displayProject(count) {
   const checkDiv3 = document.createElement("input");
   const titleDiv3 = document.createElement("div");
   const detailsDiv3 = document.createElement("div");
+  const detailsTitle3 = document.createElement("div");
   const detailsHolder3 = document.createElement("div");
   const detailsPriority3 = document.createElement("div");
   const detailsDescrip3 = document.createElement("p");
@@ -35,6 +35,7 @@ export function displayProject(count) {
   checkDiv3.type = "checkbox";
   titleDiv3.textContent = currentTask2.title;
   detailsDiv3.textContent = "Details";
+  detailsTitle3.textContent = "Title: " + currentTask2.title;
   detailsPriority3.textContent = "Priority: " + currentTask2.priority;
   detailsDescrip3.textContent = "Description: " + currentTask2.descrip;
   detailsNotes3.textContent = "Notes: " + currentTask2.notes;
@@ -43,11 +44,13 @@ export function displayProject(count) {
   editImage3.alt = "Edit";
   deleteImage3.src = trash;
   deleteImage3.alt = "Delete";
+
   taskDiv3.classList.add("taskDiv3");
   checkDiv3.id = "checkDiv3";
   titleDiv3.id = "titleDiv3";
   detailsHolder3.id = "dHolder3";
   detailsDiv3.id = "detailsDiv3";
+  detailsTitle3.id = "detailsTitle3";
   detailsPriority3.id = "detailsPriority3";
   detailsNotes3.id = "detailsNotes3";
   dateDiv3.id = "dateDiv3";
@@ -57,8 +60,8 @@ export function displayProject(count) {
   deleteImage3.classList.add("taskImg");
 
   detailsDiv3.addEventListener("click", () => {
-    if (detailsHolder3.style.display !== "block") {
-      detailsHolder3.style.display = "block";
+    if (detailsHolder3.style.display !== "flex") {
+      detailsHolder3.style.display = "flex";
     } else {
       detailsHolder3.style.display = "none";
     }
@@ -70,18 +73,18 @@ export function displayProject(count) {
     deleteImage3.style.opacity = 0.5;
   });
   editDiv3.addEventListener("click", () => {
-    userTitle.value = titleInput;
-    userDescrip.value = descripInput;
-    userDue.value = dueInput;
-    userPriority.value = priorityInput;
-    userNotes.value = notesInput;
+    userTitle.value = currentTask._title;
+    userDescrip.value = currentTask._descrip;
+    userDue.value = currentTask._due;
+    userPriority.value = currentTask._priority;
+    userNotes.value = currentTask._notes;
     submit1.style.display = "none";
     submit2.style.display = "none";
     userForm.style.display = "flex";
     confirm.style.display = "block";
   });
   deleteDiv3.addEventListener("click", () => {
-    rightContainer.removeChild(taskDiv);
+    taskDiv3.parentElement.removeChild(taskDiv3);
   });
   confirm.addEventListener("click", () => {
     //resetting form to original state after confirming changes
@@ -96,13 +99,15 @@ export function displayProject(count) {
     currentTask2._notes = userNotes.value;
     titleDiv3.textContent = currentTask2.title;
     detailsDiv3.textContent = "Details";
+    detailsTitle3.textContent = "Title:" + currentTask2.title;
     detailsPriority3.textContent = "Priority: " + currentTask2.priority;
     detailsDescrip3.textContent = "Description: " + currentTask2.descrip;
     detailsNotes3.textContent = "Notes: " + currentTask2.notes;
     dateDiv3.textContent = currentTask2.due;
-    setDefault();
+    setDefault2();
   });
 
+  detailsHolder3.appendChild(detailsTitle3);
   detailsHolder3.appendChild(detailsPriority3);
   detailsHolder3.appendChild(detailsDescrip3);
   detailsHolder3.appendChild(detailsNotes3);
@@ -115,6 +120,14 @@ export function displayProject(count) {
   taskDiv3.appendChild(editDiv3);
   taskDiv3.appendChild(deleteDiv3);
   projectDisplay.appendChild(taskDiv3);
-  projects.appendChild(projectDisplay);
-  projects.appendChild(detailsHolder3);
+  projects.before(projectDisplay);
+  projects.before(detailsHolder3);
+
+  function setDefault2() {
+    userTitle.value = userTitle.defaultValue;
+    userDescrip.value = userDescrip.defaultValue;
+    userDue.value = userDue.defaultValue;
+    userPriority.value = userPriority.defaultValue;
+    userNotes.value = userNotes.defaultValue;
+  }
 }
