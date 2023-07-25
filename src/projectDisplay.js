@@ -67,10 +67,17 @@ export function displayProject(count) {
     }
   });
   checkDiv3.addEventListener("click", () => {
-    titleDiv3.style.textDecoration = "line-through";
-    taskDiv3.style.color = "darkgrey";
-    editImage3.style.opacity = 0.5;
-    deleteImage3.style.opacity = 0.5;
+    if (checkDiv3.checked) {
+      titleDiv3.style.textDecoration = "line-through";
+      taskDiv3.style.color = "darkgrey";
+      editImage3.style.opacity = 0.5;
+      deleteImage3.style.opacity = 0.5;
+    } else {
+      titleDiv3.style.textDecoration = "line-through";
+      taskDiv3.style.color = "darkgrey";
+      editImage3.style.opacity = 1;
+      deleteImage3.style.opacity = 1;
+    }
   });
   editDiv3.addEventListener("click", () => {
     userTitle.value = currentTask._title;

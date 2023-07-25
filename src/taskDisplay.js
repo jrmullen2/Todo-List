@@ -118,16 +118,30 @@ export function displayTask() {
     }
   });
   checkDiv1.addEventListener("click", () => {
-    titleDiv1.style.textDecoration = "line-through";
-    taskDiv1.style.color = "darkgrey";
-    editImage1.style.opacity = 0.5;
-    deleteImage1.style.opacity = 0.5;
+    if (checkDiv1.checked) {
+      titleDiv1.style.textDecoration = "line-through";
+      taskDiv1.style.color = "darkgrey";
+      editImage1.style.opacity = 0.5;
+      deleteImage1.style.opacity = 0.5;
+    } else {
+      titleDiv1.style.textDecoration = "line-through";
+      taskDiv1.style.color = "darkgrey";
+      editImage1.style.opacity = 1;
+      deleteImage1.style.opacity = 1;
+    }
   });
   checkDiv2.addEventListener("click", () => {
-    titleDiv2.style.textDecoration = "line-through";
-    taskDiv2.style.color = "darkgrey";
-    editImage2.style.opacity = 0.5;
-    deleteImage2.style.opacity = 0.5;
+    if (checkDiv2.checked) {
+      titleDiv2.style.textDecoration = "line-through";
+      taskDiv2.style.color = "darkgrey";
+      editImage2.style.opacity = 0.5;
+      deleteImage2.style.opacity = 0.5;
+    } else {
+      titleDiv2.style.textDecoration = "none";
+      taskDiv2.style.color = "black";
+      editImage2.style.opacity = 1;
+      deleteImage2.style.opacity = 1;
+    }
   });
   editDiv1.addEventListener("click", () => {
     userTitle.value = currentTask._title;
