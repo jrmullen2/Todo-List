@@ -7,6 +7,9 @@ const allDiv = document.getElementById("allDiv");
 const todayDiv = document.getElementById("todayDiv");
 const upcomingDiv = document.getElementById("upcomingDiv");
 const projectsDiv = document.getElementById("projectsDiv");
+const projectsDivTitle = document.getElementById("projectsDivTitle");
+const pTitle = document.getElementById("pTitle");
+const projectNames = document.querySelectorAll(".projectName");
 const allTask = document.getElementById("allTask");
 const todayTask = document.getElementById("todayTask");
 const upcomingTask = document.getElementById("upcomingTask");
@@ -32,6 +35,8 @@ addTaskButton.textContent = "Add Task";
 
 //Adding tasks for today, upcoming, and all divs
 addTask.addEventListener("click", () => {
+  submit1.style.display = "block";
+  submit2.style.display = "none";
   userForm.style.display = "block";
   whichCategory.dateMin();
 });
@@ -53,6 +58,14 @@ submit2.addEventListener("click", () => {
 });
 
 allDiv.addEventListener("click", () => {
+  todayDiv.style.backgroundColor = "white";
+  todayDiv.style.color = "black";
+  upcomingDiv.style.backgroundColor = "white";
+  upcomingDiv.style.color = "black";
+  projectsDivTitle.style.backgroundColor = "white";
+  projectsDivTitle.style.color = "black";
+  allDiv.style.backgroundColor = "cornflowerblue";
+  allDiv.style.color = "white";
   upcomingTask.style.display = "none";
   todayTask.style.display = "none";
   projects.style.display = "none";
@@ -61,6 +74,14 @@ allDiv.addEventListener("click", () => {
   addProject.style.display = "none";
 });
 todayDiv.addEventListener("click", () => {
+  allDiv.style.backgroundColor = "white";
+  allDiv.style.color = "black";
+  upcomingDiv.style.backgroundColor = "white";
+  upcomingDiv.style.color = "black";
+  projectsDivTitle.style.backgroundColor = "white";
+  projectsDivTitle.style.color = "black";
+  todayDiv.style.backgroundColor = "cornflowerblue";
+  todayDiv.style.color = "white";
   allTask.style.display = "none";
   upcomingTask.style.display = "none";
   projects.style.display = "none";
@@ -69,6 +90,14 @@ todayDiv.addEventListener("click", () => {
   addProject.style.display = "none";
 });
 upcomingDiv.addEventListener("click", () => {
+  allDiv.style.backgroundColor = "white";
+  allDiv.style.color = "black";
+  todayDiv.style.backgroundColor = "white";
+  todayDiv.style.color = "black";
+  projectsDivTitle.style.backgroundColor = "white";
+  projectsDivTitle.style.color = "black";
+  upcomingDiv.style.backgroundColor = "cornflowerblue";
+  upcomingDiv.style.color = "white";
   allTask.style.display = "none";
   todayTask.style.display = "none";
   projects.style.display = "none";
@@ -77,12 +106,23 @@ upcomingDiv.addEventListener("click", () => {
   addProject.style.display = "none";
 });
 projectsDiv.addEventListener("click", () => {
+  allDiv.style.backgroundColor = "white";
+  allDiv.style.color = "black";
+  todayDiv.style.backgroundColor = "white";
+  todayDiv.style.color = "black";
+  upcomingDiv.style.backgroundColor = "white";
+  upcomingDiv.style.color = "black";
+  projectsDivTitle.style.backgroundColor = "cornflowerblue";
+  projectsDivTitle.style.color = "white";
   allTask.style.display = "none";
   todayTask.style.display = "none";
   upcomingTask.style.display = "none";
   projects.style.display = "flex";
   addTask.style.display = "none";
   addProject.style.display = "block";
+});
+projectsDivTitle.addEventListener("click", () => {
+  pTitle.textContent = "Projects";
 });
 addProject.addEventListener("click", () => {
   projectInput.style.display = "block";
@@ -100,9 +140,10 @@ addPName.addEventListener("click", () => {
   projectInput.style.display = "none";
   addPName.style.display = "none";
 
+  //When a project name is clicked it displays the tasks associated with it
   projectName.addEventListener("click", () => {
+    pTitle.textContent = projectName.textContent;
     count = projectName.id;
-    const projectNames = document.querySelectorAll(".projectName");
     projectNames.forEach((div) => {
       if (div.style.backgroundColor === "lavender") {
         const removeDisplays = document.querySelectorAll(".p" + div.id);
@@ -112,9 +153,10 @@ addPName.addEventListener("click", () => {
       }
       div.style.backgroundColor = "white";
     });
+    //Shows user what project is currently selected
     projectName.style.backgroundColor = "lavender";
-    const bewlongingDivs = document.querySelectorAll(".p" + projectName.id);
-    bewlongingDivs.forEach((div) => {
+    const belongingDivs = document.querySelectorAll(".p" + projectName.id);
+    belongingDivs.forEach((div) => {
       div.style.display = "block";
     });
     addTaskButton.style.display = "block";
@@ -125,6 +167,7 @@ function setDefault() {
   userTitle.value = userTitle.defaultValue;
   userDescrip.value = userDescrip.defaultValue;
   userDue.value = userDue.defaultValue;
-  userPriority.value = userPriority.defaultValue;
+  userPriority.value = "high";
   userNotes.value = userNotes.defaultValue;
 }
+//When projects is clicked we need to show all projects (kinda like all) along with a title. When a new project is created it should automatically open the new project. We need to put a message like no tasks for this project yet. We need to style nav divs
