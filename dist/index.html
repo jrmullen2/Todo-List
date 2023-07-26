@@ -3,18 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Trackr</title>
   </head>
   <body>
-    <div id="header"></div>
+    <div id="header">Trackr</div>
     <div id="left">
       <div id="nav">
         <div id="allDiv">All</div>
         <div id="todayDiv">Today</div>
         <div id="upcomingDiv">Upcoming</div>
-        <div id="projectsDiv">Projects</div>
+        <div id="projectsDiv">
+          <div id="projectsDivTitle">Projects</div>
+          <div id="projectAddContainer">
+            <input type="text" id="projectInput" />
+            <button id="addPName">+</button>
+          </div>
+        </div>
       </div>
-      <button id="plus">New Task</button>
+      <button id="addTask">New Task</button>
+      <button id="addProject">New Project</button>
     </div>
     <div id="right">
       <div id="rightContainer">
@@ -38,20 +45,24 @@
             <input type="date" name="userDue" id="userDue" />
             <label for="userPriority">Priority:</label>
             <select name="userPriority" id="userPriority">
-              <option value="high">High</option>
+              <option value="high" selected>High</option>
               <option value="middle">Middle</option>
               <option value="low">Low</option>
             </select>
             <label for="userNotes">Notes:</label>
             <textarea name="userNotes" id="userNotes"></textarea>
           </fieldset>
-          <button type="button" id="submitButton">Submit</button>
+          <button type="button" id="submitButton1">Submit</button>
+          <button type="button" id="submitButton2">Submit</button>
           <button type="button" id="confirm">Confirm Changes</button>
         </form>
         <div id="allTask">All</div>
         <div id="todayTask">Today</div>
         <div id="upcomingTask">Upcoming</div>
-        <div id="projects">Projects</div>
+        <div id="projects">
+          <div id="pTitle"></div>
+          <button id="addTaskButton">Add Task</button>
+        </div>
       </div>
     </div>
     <script src="main.js"></script>
