@@ -13,7 +13,12 @@ body {
 #header {
   grid-column: 1 / 3;
   grid-row: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: cornflowerblue;
+  color: white;
+  font-size: 36px;
   width: 100%;
 }
 #left {
@@ -30,6 +35,16 @@ body {
   row-gap: 20%;
   margin-top: 20%;
   margin-bottom: 30%;
+  font-family: "Alata", sans-serif;
+  font-size: 18px;
+  text-align: left;
+}
+#projectsDivTitle {
+  margin-bottom: 10px;
+}
+#projectAddContainer {
+  display: flex;
+  gap: 2px;
 }
 #right {
   grid-row: 2;
@@ -48,6 +63,8 @@ body {
 #allTask,
 #todayTask,
 #upcomingTask {
+  font-family: "Alata", sans-serif;
+  font-size: 36px;
   text-align: center;
   font-weight: 700;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
@@ -90,13 +107,15 @@ body {
 .taskDiv2,
 .taskDiv3 {
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 3fr 1.5fr 1.5fr 1fr 1fr;
   border: solid 2px lightsalmon;
   padding-top: 2%;
   padding-bottom: 2%;
   margin-top: 1%;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
+  justify-items: center;
+  font-family: "Alata", sans-serif;
+  font-size: 18px;
 }
 #checkDiv1,
 #checkDiv2,
@@ -104,6 +123,7 @@ body {
   grid-column: 1;
   width: 50px;
   height: auto;
+  margin: 5px;
 }
 #titleDiv1,
 #titleDiv2,
@@ -166,4 +186,20 @@ body {
 #projects {
   flex-direction: column;
   align-items: center;
+}
+#pTitle {
+  font-family: "Alata", sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+}
+#addTaskButton {
+  margin-top: 20px;
+}
+button {
+  border-radius: 8px;
+  border: 2px solid coral;
+  background-color: cornflowerblue;
+  color: white;
+  font-family: "Alata", sans-serif;
+  font-size: 20px;
 }
