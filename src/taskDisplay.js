@@ -6,11 +6,11 @@ export function displayTask() {
   const allTask = document.getElementById("allTask");
   const todayTask = document.getElementById("todayTask");
   const upcomingTask = document.getElementById("upcomingTask");
-  const userTitle = document.getElementById("userTitle");
-  const userDescrip = document.getElementById("userDescrip");
-  const userDue = document.getElementById("userDue");
-  const userPriority = document.getElementById("userPriority");
-  const userNotes = document.getElementById("userNotes");
+  const userTitle = document.querySelector(".userTitle");
+  const userDescrip = document.querySelector(".userDescrip");
+  const userDue = document.querySelector(".userDue");
+  const userPriority = document.querySelector(".userPriority");
+  const userNotes = document.querySelector(".userNotes");
   const submit1 = document.getElementById("submitButton1");
   const submit2 = document.getElementById("submitButton2");
   const confirm = document.getElementById("confirm");
@@ -49,6 +49,7 @@ export function displayTask() {
 
   //setting up inital taskDiv and its contents
   checkDiv1.type = "checkbox";
+  checkDiv1.name = "checkDiv1";
   titleDiv1.textContent = currentTask.title;
   detailsDiv1.textContent = "Details";
   detailsTitle1.textContent = "Title: " + currentTask.title;
@@ -61,6 +62,7 @@ export function displayTask() {
   deleteImage1.src = trash;
   deleteImage1.alt = "Delete";
   checkDiv2.type = "checkbox";
+  checkDiv2.name = "checkDiv2";
   titleDiv2.textContent = currentTask.title;
   detailsDiv2.textContent = "Details";
   detailsTitle2.textContent = "Title: " + currentTask.title;
@@ -76,28 +78,29 @@ export function displayTask() {
   allTask.id = "allTask";
   todayTask.id = "todayTask";
   upcomingTask.id = "upcomingTask";
-  taskDiv1.classList.add("taskDiv1");
-  checkDiv1.id = "checkDiv1";
-  titleDiv1.id = "titleDiv1";
-  detailsHolder1.id = "dHolder1";
-  detailsDiv1.id = "detailsDiv1";
-  detailsTitle1.id = "detailsTitle1";
-  detailsPriority1.id = "detailsPriority1";
-  detailsNotes1.id = "detailsNotes1";
-  dateDiv1.id = "dateDiv1";
+  taskDiv1.classList.add("taskDiv");
+  taskDiv1.classList.add("taskDiv");
+  checkDiv1.classList.add("checkDiv");
+  titleDiv1.classList.add("titleDiv");
+  detailsHolder1.classList.add("dHolder");
+  detailsDiv1.classList.add("detailsDiv");
+  detailsTitle1.classList.add("detailsTitle");
+  detailsPriority1.classList.add("detailsPriority");
+  detailsNotes1.classList.add("detailsNotes");
+  dateDiv1.classList.add("dateDiv");
   editImage1.classList.add("taskImg");
   editDiv1.classList.add("edit");
   deleteDiv1.classList.add("delete");
   deleteImage1.classList.add("taskImg");
-  taskDiv2.classList.add("taskDiv2");
-  checkDiv2.id = "checkDiv2";
-  titleDiv2.id = "titleDiv2";
-  detailsHolder2.id = "dHolder2";
-  detailsDiv2.id = "detailsDiv2";
-  detailsTitle2.id = "detailsTitle2";
-  detailsPriority2.id = "detailsPriority2";
-  detailsNotes2.id = "detailsNotes2";
-  dateDiv2.id = "dateDiv2";
+  taskDiv2.classList.add("taskDiv");
+  checkDiv2.classList.add("checkDiv");
+  titleDiv2.classList.add("titleDiv");
+  detailsHolder2.classList.add("dHolder");
+  detailsDiv2.classList.add("detailsDiv");
+  detailsTitle2.classList.add("detailsTitle");
+  detailsPriority2.classList.add("detailsPriority");
+  detailsNotes2.classList.add("detailsNotes");
+  dateDiv2.classList.add("dateDiv");
   editImage2.classList.add("taskImg");
   editDiv2.classList.add("edit");
   deleteDiv2.classList.add("delete");
@@ -229,17 +232,19 @@ export function displayTask() {
     taskDiv1.classList.add("today");
     todayTask.appendChild(taskDiv1);
     todayTask.appendChild(detailsHolder1);
+    return "today";
   } else if (whichCategory.sortDiv() === "upcoming") {
     taskDiv1.classList.add("upcoming");
     upcomingTask.appendChild(taskDiv1);
     upcomingTask.appendChild(detailsHolder1);
+    return "upcoming";
   }
 
   function setDefault1() {
     userTitle.value = userTitle.defaultValue;
     userDescrip.value = userDescrip.defaultValue;
-    userDue.value = userDue.defaultValue;
-    userPriority.value = userPriority.defaultValue;
+    userDue.value = whichCategory.currentDate;
+    userPriority.value = "high";
     userNotes.value = userNotes.defaultValue;
   }
 }
