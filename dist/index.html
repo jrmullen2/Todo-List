@@ -18,6 +18,7 @@
             <input type="text" id="projectInput" />
             <button id="addPName">+</button>
           </div>
+          <div id="projectsDivNames"></div>
         </div>
       </div>
       <button id="addTask">New Task</button>
@@ -27,38 +28,58 @@
       <div id="rightContainer">
         <form action="index.html" method="post" id="userForm">
           <fieldset id="fieldset">
-            <label for="userTitle">Title:</label>
-            <input
-              type="text"
-              name="userTitle"
-              id="userTitle"
-              placeholder="e.g. Walk Dog"
-            />
-            <label for="userDescrip">Description:</label>
-            <input
-              type="text"
-              name="userDescrip"
-              id="userDescrip"
-              placeholder="e.g. Walk dog around the block."
-            />
-            <label for="userDue">Due Date:</label>
-            <input type="date" name="userDue" id="userDue" />
-            <label for="userPriority">Priority:</label>
-            <select name="userPriority" id="userPriority">
-              <option value="high" selected>High</option>
-              <option value="middle">Middle</option>
-              <option value="low">Low</option>
-            </select>
-            <label for="userNotes">Notes:</label>
-            <textarea name="userNotes" id="userNotes"></textarea>
+            <label
+              >Title: <br />
+              <input
+                type="text"
+                name="userTitle"
+                class="userTitle"
+                placeholder="e.g. Walk Dog"
+                name="title"
+            /></label>
+            <label
+              >Description: <br />
+              <input
+                type="text"
+                name="userDescrip"
+                class="userDescrip"
+                placeholder="e.g. Walk dog around the block."
+                name="description"
+            /></label>
+            <label
+              >Due Date: <br />
+              <input type="date" name="userDue" class="userDue" name="due"
+            /></label>
+            <label
+              >Priority: <br />
+              <select name="userPriority" class="userPriority">
+                <option value="high" selected>High</option>
+                <option value="middle">Middle</option>
+                <option value="low">Low</option>
+              </select>
+            </label>
+
+            <label
+              >Notes: <br />
+              <textarea name="userNotes" class="userNotes"></textarea>
+            </label>
           </fieldset>
           <button type="button" id="submitButton1">Submit</button>
           <button type="button" id="submitButton2">Submit</button>
           <button type="button" id="confirm">Confirm Changes</button>
         </form>
-        <div id="allTask">All</div>
-        <div id="todayTask">Today</div>
-        <div id="upcomingTask">Upcoming</div>
+        <div id="allTask">
+          All
+          <div id="nTask1" class="noTasks">No tasks yet!</div>
+        </div>
+        <div id="todayTask">
+          Today
+          <div id="nTask2" class="noTasks">No tasks yet!</div>
+        </div>
+        <div id="upcomingTask">
+          Upcoming
+          <div id="nTask3" class="noTasks">No tasks yet!</div>
+        </div>
         <div id="projects">
           <div id="pTitle"></div>
           <button id="addTaskButton">Add Task</button>
