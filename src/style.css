@@ -65,34 +65,63 @@ body {
 #upcomingTask {
   font-family: "Alata", sans-serif;
   font-size: 36px;
-  text-align: center;
   font-weight: 700;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+#allTask {
+  display: flex;
+}
+.noTasks {
+  margin-top: 30%;
+  font-weight: 400;
+  font-size: 24px;
 }
 #todayTask,
 #upcomingTask,
 #projects,
 #projectInput,
 #addProject,
-#addPName {
+#addPName,
+#userForm,
+#projectsDivNames,
+#confirm,
+#addTaskButton,
+.projectDisplay {
   display: none;
 }
 #userForm {
-  display: none;
+  margin-top: 4%;
   flex-direction: column;
 }
 #fieldset {
   display: grid;
   grid-template-rows: repeat(5, 1fr);
+  row-gap: 2%;
   margin-bottom: 2%;
+  border: solid 2px coral;
 }
-#userTitle {
+label {
+  display: grid;
+  grid-template-columns: 0.4fr 4fr;
+  font-weight: 500;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+input,
+select,
+textarea {
+  font-weight: 500;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  border: solid 2px cornflowerblue;
+}
+.userTitle {
   overflow: hidden;
 }
-#dHolder1,
-#dHolder2,
-#dHolder3 {
+.dHolder {
   display: none;
   text-align: center;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
@@ -102,10 +131,9 @@ body {
   color: coral;
   flex-direction: column;
   align-items: center;
+  font-size: 24px;
 }
-.taskDiv1,
-.taskDiv2,
-.taskDiv3 {
+.taskDiv {
   display: grid;
   grid-template-columns: 1fr 3fr 1.5fr 1.5fr 1fr 1fr;
   border: solid 2px lightsalmon;
@@ -116,50 +144,35 @@ body {
   justify-items: center;
   font-family: "Alata", sans-serif;
   font-size: 18px;
+  width: 90%;
 }
-#checkDiv1,
-#checkDiv2,
-#checkDiv3 {
+.checkDiv {
   grid-column: 1;
   width: 50px;
   height: auto;
   margin: 5px;
 }
-#titleDiv1,
-#titleDiv2,
-#titleDiv3 {
+.titleDiv {
   grid-column: 2;
 }
-#titleDiv1,
-#titleDiv2 {
+.titleDiv {
   max-width: 450px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#titleDiv1,
-#titleDiv2 {
+.titleDiv {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
 }
-#titleDiv1,
-#titleDiv2::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
-}
-#detailsDiv1,
-#detailsDiv2,
-#detailsDiv3 {
+.detailsDiv {
   grid-column: 3;
 }
-#detailsTitle1,
-#detailsTitle2,
-#detailsTitle3 {
+.detailsTitle {
   max-width: 450px;
   overflow: auto;
   overflow-y: hidden;
 }
-#dateDiv1,
-#dateDiv2,
-#dateDiv3 {
+.dateDiv {
   grid-column: 4;
 }
 .edit {
@@ -170,18 +183,9 @@ body {
   grid-column: 6;
   grid-row: 1;
 }
-#confirm {
-  display: none;
-}
 .taskImg {
   width: 15px;
   height: auto;
-}
-.projectDisplay {
-  display: none;
-}
-#addTaskButton {
-  display: none;
 }
 #projects {
   flex-direction: column;
@@ -191,6 +195,8 @@ body {
   font-family: "Alata", sans-serif;
   font-size: 36px;
   font-weight: bold;
+  margin-top: 5%;
+  margin-bottom: 30%;
 }
 #addTaskButton {
   margin-top: 20px;
@@ -202,4 +208,6 @@ button {
   color: white;
   font-family: "Alata", sans-serif;
   font-size: 20px;
+  max-width: 125px;
+  height: auto;
 }
