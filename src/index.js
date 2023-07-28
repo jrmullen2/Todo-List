@@ -4,12 +4,15 @@ import { categoryCheck } from "./categoryCheck";
 import { displayProject } from "./projectDisplay";
 
 const allDiv = document.getElementById("allDiv");
+const nTask1 = document.getElementById("nTask1");
 const todayDiv = document.getElementById("todayDiv");
+const nTask2 = document.getElementById("nTask2");
 const upcomingDiv = document.getElementById("upcomingDiv");
+const nTask3 = document.getElementById("nTask3");
 const projectsDiv = document.getElementById("projectsDiv");
 const projectsDivTitle = document.getElementById("projectsDivTitle");
+const projectsDivNames = document.getElementById("projectsDivNames");
 const pTitle = document.getElementById("pTitle");
-const projectNames = document.querySelectorAll(".projectName");
 const allTask = document.getElementById("allTask");
 const todayTask = document.getElementById("todayTask");
 const upcomingTask = document.getElementById("upcomingTask");
@@ -17,11 +20,11 @@ const projects = document.getElementById("projects");
 const projectInput = document.getElementById("projectInput");
 const addProject = document.getElementById("addProject");
 const addPName = document.getElementById("addPName");
-const userTitle = document.getElementById("userTitle");
-const userDescrip = document.getElementById("userDescrip");
-const userDue = document.getElementById("userDue");
-const userPriority = document.getElementById("userPriority");
-const userNotes = document.getElementById("userNotes");
+const userTitle = document.querySelector(".userTitle");
+const userDescrip = document.querySelector(".userDescrip");
+const userDue = document.querySelector(".userDue");
+const userPriority = document.querySelector(".userPriority");
+const userNotes = document.querySelector(".userNotes");
 const addTask = document.getElementById("addTask");
 const userForm = document.getElementById("userForm");
 const submit1 = document.getElementById("submitButton1");
@@ -37,24 +40,35 @@ addTaskButton.textContent = "Add Task";
 addTask.addEventListener("click", () => {
   submit1.style.display = "block";
   submit2.style.display = "none";
-  userForm.style.display = "block";
+  userForm.style.display = "flex";
   whichCategory.dateMin();
 });
 //Adding tasks for project div
 addTaskButton.addEventListener("click", () => {
   submit1.style.display = "none";
   submit2.style.display = "block";
-  userForm.style.display = "block";
+  userForm.style.display = "flex";
 });
 submit1.addEventListener("click", () => {
   userForm.style.display = "none";
-  displayTask();
+  //When task is added "No tasks yet" goes away
+  const todayOrUpcoming = displayTask();
+  if (todayOrUpcoming === "today") {
+    nTask2.style.display = "none";
+  } else {
+    nTask3.style.display = "none";
+  }
+  nTask1.style.display = "none";
   setDefault();
+  localStorage.setItem("allTask", allTask.innerHTML);
+  localStorage.setItem("todayTask", todayTask.innerHTML);
+  localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
 });
 submit2.addEventListener("click", () => {
   userForm.style.display = "none";
   displayProject(count);
   setDefault();
+  pTitle.style.marginBottom = "2.5%";
 });
 
 allDiv.addEventListener("click", () => {
@@ -69,9 +83,12 @@ allDiv.addEventListener("click", () => {
   upcomingTask.style.display = "none";
   todayTask.style.display = "none";
   projects.style.display = "none";
-  allTask.style.display = "block";
+  allTask.style.display = "flex";
   addTask.style.display = "block";
   addProject.style.display = "none";
+  projectsDivNames.style.display = "none";
+  userForm.style.display = "none";
+  setDefault();
 });
 todayDiv.addEventListener("click", () => {
   allDiv.style.backgroundColor = "white";
@@ -85,9 +102,12 @@ todayDiv.addEventListener("click", () => {
   allTask.style.display = "none";
   upcomingTask.style.display = "none";
   projects.style.display = "none";
-  todayTask.style.display = "block";
+  todayTask.style.display = "flex";
   addTask.style.display = "block";
   addProject.style.display = "none";
+  projectsDivNames.style.display = "none";
+  userForm.style.display = "none";
+  setDefault();
 });
 upcomingDiv.addEventListener("click", () => {
   allDiv.style.backgroundColor = "white";
@@ -101,9 +121,12 @@ upcomingDiv.addEventListener("click", () => {
   allTask.style.display = "none";
   todayTask.style.display = "none";
   projects.style.display = "none";
-  upcomingTask.style.display = "block";
+  upcomingTask.style.display = "flex";
   addTask.style.display = "block";
   addProject.style.display = "none";
+  projectsDivNames.style.display = "none";
+  userForm.style.display = "none";
+  setDefault();
 });
 projectsDiv.addEventListener("click", () => {
   allDiv.style.backgroundColor = "white";
@@ -114,47 +137,52 @@ projectsDiv.addEventListener("click", () => {
   upcomingDiv.style.color = "black";
   projectsDivTitle.style.backgroundColor = "cornflowerblue";
   projectsDivTitle.style.color = "white";
-  allTask.style.display = "none";
-  todayTask.style.display = "none";
-  upcomingTask.style.display = "none";
-  projects.style.display = "flex";
   addTask.style.display = "none";
   addProject.style.display = "block";
+  projectsDivNames.style.display = "block";
+  userForm.style.display = "none";
+  setDefault();
 });
-projectsDivTitle.addEventListener("click", () => {
-  pTitle.textContent = "Projects";
-});
+//input for adding project
 addProject.addEventListener("click", () => {
   projectInput.style.display = "block";
   addPName.style.display = "block";
 });
+//"submit" button for input above
 addPName.addEventListener("click", () => {
   const projectName = document.createElement("div");
   projectName.classList.add("projectName");
   projectName.id = projectID.toString();
   projectID += 1;
   projectName.textContent = projectInput.value;
-  projectsDiv.appendChild(projectName);
+  projectsDivNames.appendChild(projectName);
   //switch to no display on user input elements
   projectInput.value = projectInput.defaultValue;
   projectInput.style.display = "none";
   addPName.style.display = "none";
-
   //When a project name is clicked it displays the tasks associated with it
   projectName.addEventListener("click", () => {
+    const projectNames = document.querySelectorAll(".projectName");
+    allTask.style.display = "none";
+    todayTask.style.display = "none";
+    upcomingTask.style.display = "none";
+    projects.style.display = "flex";
+    //resets any selected divs
     pTitle.textContent = projectName.textContent;
     count = projectName.id;
     projectNames.forEach((div) => {
-      if (div.style.backgroundColor === "lavender") {
+      if (div.style.backgroundColor == "coral") {
         const removeDisplays = document.querySelectorAll(".p" + div.id);
         removeDisplays.forEach((div) => {
           div.style.display = "none";
         });
       }
       div.style.backgroundColor = "white";
+      div.style.color = "black";
     });
     //Shows user what project is currently selected
-    projectName.style.backgroundColor = "lavender";
+    projectName.style.backgroundColor = "coral";
+    projectName.style.color = "white";
     const belongingDivs = document.querySelectorAll(".p" + projectName.id);
     belongingDivs.forEach((div) => {
       div.style.display = "block";
@@ -166,8 +194,8 @@ addPName.addEventListener("click", () => {
 function setDefault() {
   userTitle.value = userTitle.defaultValue;
   userDescrip.value = userDescrip.defaultValue;
-  userDue.value = userDue.defaultValue;
+  userDue.value = whichCategory.currentDate;
   userPriority.value = "high";
   userNotes.value = userNotes.defaultValue;
 }
-//When projects is clicked we need to show all projects (kinda like all) along with a title. When a new project is created it should automatically open the new project. We need to put a message like no tasks for this project yet. We need to style nav divs
+// We need to style nav divs. Finish styling project margins make them change percent when a task is added
