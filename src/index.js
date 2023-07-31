@@ -2,6 +2,7 @@ import "./style.css";
 import { displayTask } from "./taskDisplay";
 import { categoryCheck } from "./categoryCheck";
 import { displayProject } from "./projectDisplay";
+import { useStorage } from "./storage";
 
 const allDiv = document.getElementById("allDiv");
 const nTask1 = document.getElementById("nTask1");
@@ -32,8 +33,15 @@ const submit2 = document.getElementById("submitButton2");
 const addTaskButton = document.getElementById("addTaskButton");
 let count;
 let projectID = 0;
+let currentProjectClass;
 let whichCategory = categoryCheck();
-
+if (
+  localStorage.getItem("allTask") ||
+  localStorage.getItem("projectsDivNames")
+) {
+  useStorage();
+  projectID = localStorage.getItem("projectID");
+}
 addTaskButton.textContent = "Add Task";
 
 //Adding tasks for today, upcoming, and all divs
@@ -69,6 +77,12 @@ submit2.addEventListener("click", () => {
   displayProject(count);
   setDefault();
   pTitle.style.marginBottom = "2.5%";
+  console.log(currentProjectClass);
+  localStorage.setItem(
+    currentProjectClass,
+    projects.innerHTML
+    //can give id of highlighted name create variable
+  );
 });
 
 allDiv.addEventListener("click", () => {
@@ -154,14 +168,18 @@ addPName.addEventListener("click", () => {
   projectName.classList.add("projectName");
   projectName.id = projectID.toString();
   projectID += 1;
+  localStorage.setItem("projectID", projectID);
   projectName.textContent = projectInput.value;
+  localStorage.setItem(projectName.id, projectName.textContent);
   projectsDivNames.appendChild(projectName);
+  localStorage.setItem("projectsDivNames", projectsDivNames.innerHTML);
   //switch to no display on user input elements
   projectInput.value = projectInput.defaultValue;
   projectInput.style.display = "none";
   addPName.style.display = "none";
   //When a project name is clicked it displays the tasks associated with it
   projectName.addEventListener("click", () => {
+    currentProjectClass = projectName.id;
     const projectNames = document.querySelectorAll(".projectName");
     allTask.style.display = "none";
     todayTask.style.display = "none";
@@ -199,3 +217,5 @@ function setDefault() {
   userNotes.value = userNotes.defaultValue;
 }
 // We need to style nav divs. Finish styling project margins make them change percent when a task is added
+//Add for loop that provides functionality for existing project names
+//modify local storage statements in addPName event listener
