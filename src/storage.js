@@ -1,9 +1,11 @@
+import { categoryCheck } from "./categoryCheck";
+import { displayTask } from "./taskDisplay";
 //loads any previous tasks orprojects and gives them functionality
 export function useStorage() {
   allTask.innerHTML = localStorage.getItem("allTask");
   todayTask.innerHTML = localStorage.getItem("todayTask");
   upcomingTask.innerHTML = localStorage.getItem("upcomingTask");
-  projects.innerHTML = localStorage.getItem("projects");
+  let currentProjectClass;
 
   const checkboxes = document.querySelectorAll(".checkDiv");
   const details = document.querySelectorAll(".detailsDiv");
@@ -22,17 +24,152 @@ export function useStorage() {
   const nTask2 = document.getElementById("nTask2");
   const nTask3 = document.getElementById("nTask3");
   const projectID = localStorage.getItem("projectID");
-  const addTaskButton = document.getElementById("addTaskButton");
 
   submit1.addEventListener("click", () => {
     //When task is added "No tasks yet" goes away
-    if (todayTask.lastElementChild.id !== nTask2.id) {
+    if (userDue.value == categoryCheck().currentDate) {
       nTask2.style.display = "none";
-    } else if (upcomingTask.lastElementChild.id !== nTask3.id) {
+    } else {
       nTask3.style.display = "none";
     }
     nTask1.style.display = "none";
   });
+  //Takes the project names from local storage and gives back their functionality
+  for (let i = 0; i < projectID; i++) {
+    const projectName = document.createElement("div");
+    projectName.textContent = localStorage.getItem(i.toString());
+    projectName.id = i.toString();
+    projectName.classList.add("projectName");
+    projectsDivNames.appendChild(projectName);
+    projectName.addEventListener("click", () => {
+      const projectNames = document.querySelectorAll(".projectName");
+      currentProjectClass = projectName.id;
+      allTask.style.display = "none";
+      todayTask.style.display = "none";
+      upcomingTask.style.display = "none";
+      projects.innerHTML = localStorage.getItem("p" + projectName.id);
+      projects.style.display = "flex";
+      const dHolders = document.querySelectorAll(".proj.dHolder");
+      dHolders.forEach((div) => {
+        div.style.display = "none";
+      });
+      const addTaskButton = document.getElementById("addTaskButton");
+      const pdeletes = document.querySelectorAll(".delete");
+      const pCheckboxes = document.querySelectorAll(".proj.checkDiv");
+      const pdetails = document.querySelectorAll(".proj.detailsDiv");
+      const pedits = document.querySelectorAll(".proj.edit");
+      pCheckboxes.forEach((div) => {
+        div.addEventListener("click", () => {
+          if (div.checked) {
+            div.parentElement.childNodes[1].style.textDecoration =
+              "line-through";
+            div.parentElement.style.color = "darkgrey";
+            div.parentElement.childNodes[4].style.opacity = 0.5;
+            div.parentElement.childNodes[5].style.opacity = 0.5;
+          } else {
+            div.parentElement.childNodes[1].style.textDecoration = "none";
+            div.parentElement.style.color = "black";
+            div.parentElement.childNodes[4].style.opacity = 1;
+            div.parentElement.childNodes[5].style.opacity = 1;
+          }
+        });
+      });
+      pdetails.forEach((div) => {
+        div.addEventListener("click", () => {
+          if (
+            div.parentElement.parentElement.parentElement.childNodes[1].style
+              .display === "none"
+          ) {
+            div.parentElement.parentElement.parentElement.childNodes[1].style.display =
+              "grid";
+          } else {
+            div.parentElement.parentElement.parentElement.childNodes[1].style.display =
+              "none";
+          }
+        });
+      });
+      pedits.forEach((div) => {
+        console.log(div.parentElement.parentElement.childNodes);
+        console.log(div.parentElement.childNodes[3].textContent);
+        div.addEventListener("click", () => {
+          userTitle.value = div.parentElement.childNodes[1].textContent;
+          userDescrip.value =
+            div.parentElement.parentElement.parentElement.childNodes[1].childNodes[5].textContent;
+          userDue.value = div.parentElement.childNodes[3].textContent;
+          userPriority.value =
+            div.parentElement.parentElement.parentElement.childNodes[1].childNodes[3].textContent;
+          userNotes.value =
+            div.parentElement.parentElement.parentElement.childNodes[1].childNodes[7].textContent;
+          submit1.style.display = "none";
+          submit2.style.display = "none";
+          userForm.style.display = "flex";
+          confirm.style.display = "block";
+        });
+        confirm.addEventListener("click", () => {
+          //resetting form to original state after confirming changes
+          console.log(div.parentElement.parentElement.childNodes);
+          userForm.style.display = "none";
+          confirm.style.display = "none";
+          submit1.style.display = "block";
+          submit2.style.display = "block";
+          div.parentElement.childNodes[1].textContent = userTitle.value;
+          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[1].textContent =
+            userTitle.value;
+          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[5].textContent =
+            userDescrip.value;
+          div.parentElement.childNodes[3].textContent = userDue.value;
+          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[3].textContent =
+            userPriority.value;
+          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[7].textContent =
+            userNotes.value;
+          localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
+        });
+      });
+
+      pdeletes.forEach((div) => {
+        div.addEventListener("click", () => {
+          const mainContainer =
+            div.parentElement.parentElement.parentElement.parentElement.id;
+          const nTask =
+            div.parentElement.parentElement.parentElement.childNodes[1].id;
+          div.parentElement.parentElement.parentElement.removeChild(
+            div.parentElement.parentElement
+          );
+          if (
+            document.getElementById(mainContainer).lastElementChild.id === nTask
+          ) {
+            document.getElementById(nTask).style.display = "block";
+          }
+          localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
+        });
+        addTaskButton.addEventListener("click", () => {
+          submit1.style.display = "none";
+          setDefault4();
+          submit2.style.display = "block";
+          userForm.style.display = "flex";
+        });
+      });
+
+      //resets any selected divs
+      projectNames.forEach((div) => {
+        if (div.style.backgroundColor === "coral") {
+          const removeDisplays = document.querySelectorAll(".p" + div.id);
+          removeDisplays.forEach((div) => {
+            div.style.display = "none";
+          });
+        }
+        div.style.backgroundColor = "white";
+        div.style.color = "black";
+      });
+      //Shows user what project is currently selected
+      projectName.style.backgroundColor = "coral";
+      projectName.style.color = "white";
+      const belongingDivs = document.querySelectorAll(".p" + projectName.id);
+      belongingDivs.forEach((div) => {
+        div.style.display = "block";
+      });
+    });
+  }
   checkboxes.forEach((div) => {
     div.addEventListener("click", () => {
       if (div.checked) {
@@ -41,13 +178,14 @@ export function useStorage() {
         div.parentElement.childNodes[4].style.opacity = 0.5;
         div.parentElement.childNodes[5].style.opacity = 0.5;
       } else {
-        div.parentElement.childNodes[1].style.textDecoration = "line-through";
-        div.parentElement.style.color = "darkgrey";
+        div.parentElement.childNodes[1].style.textDecoration = "none";
+        div.parentElement.style.color = "black";
         div.parentElement.childNodes[4].style.opacity = 1;
         div.parentElement.childNodes[5].style.opacity = 1;
       }
     });
   });
+
   details.forEach((div) => {
     div.addEventListener("click", () => {
       if (
@@ -82,13 +220,14 @@ export function useStorage() {
       submit2.style.display = "block";
       div.parentElement.childNodes[1].textContent = userTitle.value;
       div.parentElement.parentElement.childNodes[1].childNodes[1].textContent =
+        userTitle.value;
+      div.parentElement.parentElement.childNodes[1].childNodes[5].textContent =
         userDescrip.value;
       div.parentElement.childNodes[3].textContent = userDue.value;
       div.parentElement.parentElement.childNodes[1].childNodes[3].textContent =
         userPriority.value;
-      div.parentElement.parentElement.childNodes[1].childNodes[5].textContent =
+      div.parentElement.parentElement.childNodes[1].childNodes[7].textContent =
         userNotes.value;
-      setDefault4();
       localStorage.setItem("allTask", allTask.innerHTML);
       localStorage.setItem("todayTask", todayTask.innerHTML);
       localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
@@ -103,7 +242,6 @@ export function useStorage() {
       div.parentElement.parentElement.parentElement.removeChild(
         div.parentElement.parentElement
       );
-      console.log(document.getElementById(mainContainer).lastElementChild.id);
       if (
         document.getElementById(mainContainer).lastElementChild.id === nTask
       ) {
@@ -114,53 +252,19 @@ export function useStorage() {
       localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
     });
   });
-  //Takes the project names from local storage and gives back their functionality
-  for (let i = 0; i < projectID; i++) {
-    const projectName = document.createElement("div");
-    projectName.textContent = localStorage.getItem(i.toString());
-    projectName.id = i.toString();
-    projectName.classList.add("projectName");
-    projectsDivNames.appendChild(projectName);
-    console.log(projectName);
-    projectName.addEventListener("click", () => {
-      console.log(".p" + projectName.id);
-      const projectNames = document.querySelectorAll(".projectName");
-      allTask.style.display = "none";
-      todayTask.style.display = "none";
-      upcomingTask.style.display = "none";
-      projects.innerHTML = localStorage.getItem(projectName.id);
-      projects.style.display = "flex";
-      //resets any selected divs
-      projectNames.forEach((div) => {
-        if (div.style.backgroundColor === "coral") {
-          const removeDisplays = document.querySelectorAll(".p" + div.id);
-          removeDisplays.forEach((div) => {
-            div.style.display = "none";
-          });
-        }
-        div.style.backgroundColor = "white";
-        div.style.color = "black";
-      });
-      //Shows user what project is currently selected
-      projectName.style.backgroundColor = "coral";
-      projectName.style.color = "white";
-      const belongingDivs = document.querySelectorAll(".p" + projectName.id);
-      belongingDivs.forEach((div) => {
-        div.style.display = "block";
-      });
-    });
-  }
 }
 
 function setDefault4() {
+  const userTitle = document.querySelector(".userTitle");
+  const userDescrip = document.querySelector(".userDescrip");
+  const userDue = document.querySelector(".userDue");
+  const userPriority = document.querySelector(".userPriority");
+  const userNotes = document.querySelector(".userNotes");
   userTitle.value = userTitle.defaultValue;
   userDescrip.value = userDescrip.defaultValue;
-  userDue.value = whichCategory.currentDate;
-  userPriority.value = "high";
+  userDue.value = categoryCheck().currentDate;
+  userPriority.value = "High";
   userNotes.value = userNotes.defaultValue;
 }
-//need to polish up the functionality for these and werite commits
-//Created storage.js to allow for local storage of tasks.
-//modify projectName listener. Add nTasks HTML in provided functionality in index.js
-//Change ids of taskDiv contents to classes
-//
+
+//set date min on refreshed form as well as for projects normal and refreshed
