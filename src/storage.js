@@ -23,11 +23,9 @@ export function useStorage() {
   const nTask1 = document.getElementById("nTask1");
   const nTask2 = document.getElementById("nTask2");
   const nTask3 = document.getElementById("nTask3");
-  let projectID = localStorage.getItem("projectID");
   let newProjectID = parseInt(localStorage.getItem("projectID"));
   const storedIDHolder1 = document.getElementById("storedIDHolder1");
   const storedIDHolder2 = document.getElementById("storedIDHolder2");
-  const addPName = document.getElementById("addPName");
 
   submit1.addEventListener("click", () => {
     //When task is added "No tasks yet" goes away
@@ -42,18 +40,39 @@ export function useStorage() {
     pTitle.style.marginBottom = "2.5%";
   });
   //Takes the project names from local storage and gives back their functionality
-  for (let i = 0; i < projectID; i++) {
-    const projectName = document.createElement("div");
-    projectName.textContent = localStorage.getItem(i.toString());
+  for (let i = 0; i < newProjectID; i++) {
     console.log(localStorage.getItem(i.toString()));
+    if (localStorage.getItem(i.toString()) === null) {
+      continue;
+    }
+    const projects = document.getElementById("projects");
+    const pNameHolders = document.createElement("div");
+    const nameDeleteButton = document.createElement("button");
+    const projectName = document.createElement("div");
+    nameDeleteButton.textContent = "X";
+    nameDeleteButton.style.color = "darkgrey";
+    projectName.textContent = localStorage.getItem(i.toString());
     projectName.id = i.toString();
     projectName.classList.add("projectName");
-    projectsDivNames.appendChild(projectName);
-    projectName.addEventListener("click", () => {
-      projects.innerHTML = localStorage.setItem(
-        "p" + currentProjectClass,
-        projects.innerHTML
+    pNameHolders.appendChild(projectName);
+    pNameHolders.appendChild(nameDeleteButton);
+    pNameHolders.style.display = "flex";
+    projectsDivNames.appendChild(pNameHolders);
+    nameDeleteButton.addEventListener("click", () => {
+      const divsToBeRemoved = document.querySelectorAll(
+        ".innerContainer" + ".i" + projectName.id
       );
+      divsToBeRemoved.forEach((div) => {
+        projects.removeChild(div);
+      });
+      projectsDivNames.removeChild(pNameHolders);
+      localStorage.removeItem("p" + projectName.id);
+      localStorage.removeItem(projectName.id);
+      pTitle.style.display = "none";
+      addTaskButton.style.display = "none";
+    });
+    projectName.addEventListener("click", () => {
+      projects.innerHTML = localStorage.getItem("p" + currentProjectClass);
       const projectNames = document.querySelectorAll(".projectName");
       currentProjectClass = projectName.id;
       allTask.style.display = "none";
@@ -66,10 +85,15 @@ export function useStorage() {
         div.style.display = "none";
       });
       const addTaskButton = document.getElementById("addTaskButton");
+      const pTitle = document.getElementById("pTitle");
       const pdeletes = document.querySelectorAll(".delete");
       const pCheckboxes = document.querySelectorAll(".proj.checkDiv");
       const pdetails = document.querySelectorAll(".proj.detailsDiv");
       const pedits = document.querySelectorAll(".proj.edit");
+
+      pTitle.style.display = "block";
+      addTaskButton.style.display = "block";
+
       pCheckboxes.forEach((div) => {
         div.addEventListener("click", () => {
           if (div.checked) {
@@ -162,70 +186,6 @@ export function useStorage() {
     });
   }
 
-  addPName.addEventListener("click", () => {
-    const projectName = document.createElement("div");
-    const pTitle = document.getElementById("pTitle");
-    const addTaskButton = document.getElementById("addTaskButton");
-    const projectInput = document.getElementById("projectInput");
-    projectName.classList.add("projectName");
-    projectName.id = projectID;
-    newProjectID += 1;
-    localStorage.setItem("projectID", newProjectID);
-    projectName.textContent = projectInput.value;
-    localStorage.setItem(projectName.id, projectName.textContent);
-    projectsDivNames.appendChild(projectName);
-    projectName.style.backgroundColor = "coral";
-    projectName.style.color = "white";
-    let projectNames = document.querySelectorAll(".projectName");
-    currentProjectClass = projectName.id;
-    allTask.style.display = "none";
-    todayTask.style.display = "none";
-    upcomingTask.style.display = "none";
-    projects.style.display = "flex";
-    pTitle.textContent = projectName.textContent;
-    addTaskButton.style.display = "block";
-    localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
-    count = projectName.id;
-    projectNames.forEach((div) => {
-      if (div.style.backgroundColor == "coral") {
-        const removeDisplays = document.querySelectorAll(".p" + div.id);
-        removeDisplays.forEach((div) => {
-          div.style.display = "none";
-        });
-      }
-      div.style.backgroundColor = "white";
-      div.style.color = "black";
-    });
-    //switch to no display on user input elements
-    projectInput.value = projectInput.defaultValue;
-    projectInput.style.display = "none";
-    addPName.style.display = "none";
-    //When a project name is clicked it displays the tasks associated with it
-    projectName.addEventListener("click", () => {
-      currentProjectClass = projectName.id;
-      const projectNames = document.querySelectorAll(".projectName");
-      pTitle.textContent = projectName.textContent;
-      //resets any selected divs
-      projectNames.forEach((div) => {
-        if (div.style.backgroundColor == "coral") {
-          const removeDisplays = document.querySelectorAll(".p" + div.id);
-          removeDisplays.forEach((div) => {
-            div.style.display = "none";
-          });
-        }
-        div.style.backgroundColor = "white";
-        div.style.color = "black";
-      });
-      //Shows user what project is currently selected
-      projectName.style.backgroundColor = "coral";
-      projectName.style.color = "white";
-      const belongingDivs = document.querySelectorAll(".p" + projectName.id);
-      belongingDivs.forEach((div) => {
-        div.style.display = "block";
-      });
-      addTaskButton.style.display = "block";
-    });
-  });
   //Adds functionality to all taskDiv elements that are not in projects
   checkboxes.forEach((div) => {
     div.addEventListener("click", () => {

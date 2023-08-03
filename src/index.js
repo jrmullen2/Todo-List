@@ -47,7 +47,7 @@ let editIDNumber2 = 0;
 if (!localStorage.getItem("projectID")) {
   localStorage.setItem("projectID", projectID);
 }
-if (localStorage.getItem("allTask") || localStorage.getItem("0")) {
+if (localStorage.getItem("allTask") || localStorage.getItem("projectID") != 0) {
   useStorage();
   projectID = localStorage.getItem("projectID");
 }
@@ -114,6 +114,8 @@ allDiv.addEventListener("click", () => {
   allTask.style.display = "flex";
   addTask.style.display = "block";
   addProject.style.display = "none";
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
   projectsDivNames.style.display = "none";
   userForm.style.display = "none";
   setDefault();
@@ -133,6 +135,8 @@ todayDiv.addEventListener("click", () => {
   todayTask.style.display = "flex";
   addTask.style.display = "block";
   addProject.style.display = "none";
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
   projectsDivNames.style.display = "none";
   userForm.style.display = "none";
   setDefault();
@@ -152,6 +156,8 @@ upcomingDiv.addEventListener("click", () => {
   upcomingTask.style.display = "flex";
   addTask.style.display = "block";
   addProject.style.display = "none";
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
   projectsDivNames.style.display = "none";
   userForm.style.display = "none";
   setDefault();
@@ -230,14 +236,17 @@ confirm2.addEventListener("click", () => {
   localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
 });
 
-//input for adding project
+//Click "New Project" button and display input and submit button
 addProject.addEventListener("click", () => {
   projectInput.style.display = "block";
   addPName.style.display = "block";
 });
-//"submit" button for input above
 addPName.addEventListener("click", () => {
+  const pNameHolders = document.createElement("div");
+  const nameDeleteButton = document.createElement("button");
   const projectName = document.createElement("div");
+  nameDeleteButton.textContent = "X";
+  nameDeleteButton.style.color = "darkgrey";
   projectName.classList.add("projectName");
   projectName.id = projectID.toString();
   projectID = parseInt(projectID) + 1;
@@ -245,7 +254,10 @@ addPName.addEventListener("click", () => {
   localStorage.setItem("projectID", projectID);
   projectName.textContent = projectInput.value;
   localStorage.setItem(projectName.id, projectName.textContent);
-  projectsDivNames.appendChild(projectName);
+  pNameHolders.appendChild(projectName);
+  pNameHolders.appendChild(nameDeleteButton);
+  pNameHolders.style.display = "flex";
+  projectsDivNames.appendChild(pNameHolders);
   //opens newly added project name automatically
   projectName.style.backgroundColor = "coral";
   projectName.style.color = "white";
@@ -280,11 +292,26 @@ addPName.addEventListener("click", () => {
   projectInput.value = projectInput.defaultValue;
   projectInput.style.display = "none";
   addPName.style.display = "none";
+  nameDeleteButton.addEventListener("click", () => {
+    const divsToBeRemoved = document.querySelectorAll(
+      ".innerContainer" + ".i" + projectName.id
+    );
+    divsToBeRemoved.forEach((div) => {
+      projects.removeChild(div);
+    });
+    projectsDivNames.removeChild(pNameHolders);
+    localStorage.removeItem("p" + projectName.id);
+    localStorage.removeItem(projectName.id);
+    pTitle.style.display = "none";
+    addTaskButton.style.display = "none";
+  });
   //When a project name is clicked it displays the tasks associated with it
   projectName.addEventListener("click", () => {
     projectNames = document.querySelectorAll(".projectName");
     currentProjectClass = projectName.id;
     pTitle.textContent = projectName.textContent;
+    pTitle.style.display = "block";
+    addTaskButton.style.display = "block";
     //resets any selected divs
     count = projectName.id;
     projectNames.forEach((div) => {
@@ -314,5 +341,7 @@ function setDefault() {
   userPriority.value = "High";
   userNotes.value = userNotes.defaultValue;
 }
-// We need to style nav divs. Finish styling project margins make them change percent when a task is added
-//Add functionality for all task divs in projects and addTaskButton
+//Link taskDiv1 and taskDiv2 and their functionalities
+//Give highlight to project names when initially opened in storage
+//delete project names from display and local storage
+//fix pNameHolders styling and scroll bar for overflow project names
