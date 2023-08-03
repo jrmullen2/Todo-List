@@ -6,7 +6,6 @@ export function useStorage() {
   todayTask.innerHTML = localStorage.getItem("todayTask");
   upcomingTask.innerHTML = localStorage.getItem("upcomingTask");
   let currentProjectClass;
-
   const checkboxes = document.querySelectorAll(".checkDiv");
   const details = document.querySelectorAll(".detailsDiv");
   const edits = document.querySelectorAll(".edit");
@@ -18,12 +17,17 @@ export function useStorage() {
   const userNotes = document.querySelector(".userNotes");
   const submit1 = document.getElementById("submitButton1");
   const submit2 = document.getElementById("submitButton2");
-  const confirm = document.getElementById("confirm");
+  const confirm1 = document.getElementById("confirm1");
+  const confirm2 = document.getElementById("confirm2");
   const userForm = document.getElementById("userForm");
   const nTask1 = document.getElementById("nTask1");
   const nTask2 = document.getElementById("nTask2");
   const nTask3 = document.getElementById("nTask3");
-  const projectID = localStorage.getItem("projectID");
+  let projectID = localStorage.getItem("projectID");
+  let newProjectID = parseInt(localStorage.getItem("projectID"));
+  const storedIDHolder1 = document.getElementById("storedIDHolder1");
+  const storedIDHolder2 = document.getElementById("storedIDHolder2");
+  const addPName = document.getElementById("addPName");
 
   submit1.addEventListener("click", () => {
     //When task is added "No tasks yet" goes away
@@ -34,14 +38,22 @@ export function useStorage() {
     }
     nTask1.style.display = "none";
   });
+  submit2.addEventListener("click", () => {
+    pTitle.style.marginBottom = "2.5%";
+  });
   //Takes the project names from local storage and gives back their functionality
   for (let i = 0; i < projectID; i++) {
     const projectName = document.createElement("div");
     projectName.textContent = localStorage.getItem(i.toString());
+    console.log(localStorage.getItem(i.toString()));
     projectName.id = i.toString();
     projectName.classList.add("projectName");
     projectsDivNames.appendChild(projectName);
     projectName.addEventListener("click", () => {
+      projects.innerHTML = localStorage.setItem(
+        "p" + currentProjectClass,
+        projects.innerHTML
+      );
       const projectNames = document.querySelectorAll(".projectName");
       currentProjectClass = projectName.id;
       allTask.style.display = "none";
@@ -89,9 +101,8 @@ export function useStorage() {
         });
       });
       pedits.forEach((div) => {
-        console.log(div.parentElement.parentElement.childNodes);
-        console.log(div.parentElement.childNodes[3].textContent);
         div.addEventListener("click", () => {
+          storedIDHolder2.textContent = div.parentElement.id;
           userTitle.value = div.parentElement.childNodes[1].textContent;
           userDescrip.value =
             div.parentElement.parentElement.parentElement.childNodes[1].childNodes[5].textContent;
@@ -103,26 +114,7 @@ export function useStorage() {
           submit1.style.display = "none";
           submit2.style.display = "none";
           userForm.style.display = "flex";
-          confirm.style.display = "block";
-        });
-        confirm.addEventListener("click", () => {
-          //resetting form to original state after confirming changes
-          console.log(div.parentElement.parentElement.childNodes);
-          userForm.style.display = "none";
-          confirm.style.display = "none";
-          submit1.style.display = "block";
-          submit2.style.display = "block";
-          div.parentElement.childNodes[1].textContent = userTitle.value;
-          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[1].textContent =
-            userTitle.value;
-          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[5].textContent =
-            userDescrip.value;
-          div.parentElement.childNodes[3].textContent = userDue.value;
-          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[3].textContent =
-            userPriority.value;
-          div.parentElement.parentElement.parentElement.childNodes[1].childNodes[7].textContent =
-            userNotes.value;
-          localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
+          confirm2.style.display = "block";
         });
       });
 
@@ -142,14 +134,13 @@ export function useStorage() {
           }
           localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
         });
-        addTaskButton.addEventListener("click", () => {
-          submit1.style.display = "none";
-          setDefault4();
-          submit2.style.display = "block";
-          userForm.style.display = "flex";
-        });
       });
-
+      addTaskButton.addEventListener("click", () => {
+        submit1.style.display = "none";
+        setDefault4();
+        submit2.style.display = "block";
+        userForm.style.display = "flex";
+      });
       //resets any selected divs
       projectNames.forEach((div) => {
         if (div.style.backgroundColor === "coral") {
@@ -170,6 +161,72 @@ export function useStorage() {
       });
     });
   }
+
+  addPName.addEventListener("click", () => {
+    const projectName = document.createElement("div");
+    const pTitle = document.getElementById("pTitle");
+    const addTaskButton = document.getElementById("addTaskButton");
+    const projectInput = document.getElementById("projectInput");
+    projectName.classList.add("projectName");
+    projectName.id = projectID;
+    newProjectID += 1;
+    localStorage.setItem("projectID", newProjectID);
+    projectName.textContent = projectInput.value;
+    localStorage.setItem(projectName.id, projectName.textContent);
+    projectsDivNames.appendChild(projectName);
+    projectName.style.backgroundColor = "coral";
+    projectName.style.color = "white";
+    let projectNames = document.querySelectorAll(".projectName");
+    currentProjectClass = projectName.id;
+    allTask.style.display = "none";
+    todayTask.style.display = "none";
+    upcomingTask.style.display = "none";
+    projects.style.display = "flex";
+    pTitle.textContent = projectName.textContent;
+    addTaskButton.style.display = "block";
+    localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
+    count = projectName.id;
+    projectNames.forEach((div) => {
+      if (div.style.backgroundColor == "coral") {
+        const removeDisplays = document.querySelectorAll(".p" + div.id);
+        removeDisplays.forEach((div) => {
+          div.style.display = "none";
+        });
+      }
+      div.style.backgroundColor = "white";
+      div.style.color = "black";
+    });
+    //switch to no display on user input elements
+    projectInput.value = projectInput.defaultValue;
+    projectInput.style.display = "none";
+    addPName.style.display = "none";
+    //When a project name is clicked it displays the tasks associated with it
+    projectName.addEventListener("click", () => {
+      currentProjectClass = projectName.id;
+      const projectNames = document.querySelectorAll(".projectName");
+      pTitle.textContent = projectName.textContent;
+      //resets any selected divs
+      projectNames.forEach((div) => {
+        if (div.style.backgroundColor == "coral") {
+          const removeDisplays = document.querySelectorAll(".p" + div.id);
+          removeDisplays.forEach((div) => {
+            div.style.display = "none";
+          });
+        }
+        div.style.backgroundColor = "white";
+        div.style.color = "black";
+      });
+      //Shows user what project is currently selected
+      projectName.style.backgroundColor = "coral";
+      projectName.style.color = "white";
+      const belongingDivs = document.querySelectorAll(".p" + projectName.id);
+      belongingDivs.forEach((div) => {
+        div.style.display = "block";
+      });
+      addTaskButton.style.display = "block";
+    });
+  });
+  //Adds functionality to all taskDiv elements that are not in projects
   checkboxes.forEach((div) => {
     div.addEventListener("click", () => {
       if (div.checked) {
@@ -199,6 +256,7 @@ export function useStorage() {
   });
   edits.forEach((div) => {
     div.addEventListener("click", () => {
+      storedIDHolder1.textContent = div.parentElement.id;
       userTitle.value = div.parentElement.childNodes[1].textContent;
       userDescrip.value =
         div.parentElement.parentElement.childNodes[1].childNodes[1].textContent;
@@ -210,30 +268,11 @@ export function useStorage() {
       submit1.style.display = "none";
       submit2.style.display = "none";
       userForm.style.display = "flex";
-      confirm.style.display = "block";
-    });
-    confirm.addEventListener("click", () => {
-      //resetting form to original state after confirming changes
-      userForm.style.display = "none";
-      confirm.style.display = "none";
-      submit1.style.display = "block";
-      submit2.style.display = "block";
-      div.parentElement.childNodes[1].textContent = userTitle.value;
-      div.parentElement.parentElement.childNodes[1].childNodes[1].textContent =
-        userTitle.value;
-      div.parentElement.parentElement.childNodes[1].childNodes[5].textContent =
-        userDescrip.value;
-      div.parentElement.childNodes[3].textContent = userDue.value;
-      div.parentElement.parentElement.childNodes[1].childNodes[3].textContent =
-        userPriority.value;
-      div.parentElement.parentElement.childNodes[1].childNodes[7].textContent =
-        userNotes.value;
-      localStorage.setItem("allTask", allTask.innerHTML);
-      localStorage.setItem("todayTask", todayTask.innerHTML);
-      localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
+      confirm1.style.display = "block";
     });
   });
 
+  confirm2.addEventListener("click", () => {});
   deletes.forEach((div) => {
     div.addEventListener("click", () => {
       const mainContainer = div.parentElement.parentElement.parentElement.id;

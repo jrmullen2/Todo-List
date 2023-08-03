@@ -39,7 +39,7 @@ let currentProjectClass;
 let whichCategory = categoryCheck();
 let storedID1;
 let storedID2;
-const storedIDHolder1 = document.getElementById("storedIDHolder2");
+const storedIDHolder1 = document.getElementById("storedIDHolder1");
 const storedIDHolder2 = document.getElementById("storedIDHolder2");
 let editIDNumber1 = 0;
 let editIDNumber2 = 0;
@@ -58,13 +58,18 @@ addTask.addEventListener("click", () => {
   setDefault();
   submit1.style.display = "block";
   submit2.style.display = "none";
+  confirm1.style.display = "none";
+  confirm2.style.display = "none";
   userForm.style.display = "flex";
   whichCategory.dateMin();
 });
 //Adding tasks for project div
 addTaskButton.addEventListener("click", () => {
+  setDefault();
   submit1.style.display = "none";
   submit2.style.display = "block";
+  confirm1.style.display = "none";
+  confirm2.style.display = "none";
   userForm.style.display = "flex";
   whichCategory.dateMin();
 });
@@ -172,8 +177,10 @@ confirm1.addEventListener("click", () => {
   confirm1.style.display = "none";
   submit1.style.display = "block";
   submit2.style.display = "block";
+  console.log(storedIDHolder1.textContent);
   storedID1 = storedIDHolder1.textContent;
   console.log(storedID1);
+  localStorage.setItem("storedID1", storedID1);
   document.getElementById(storedID1).childNodes[1].textContent =
     userTitle.value;
   document.getElementById(
@@ -195,17 +202,18 @@ confirm1.addEventListener("click", () => {
 });
 confirm2.addEventListener("click", () => {
   userForm.style.display = "none";
-  confirm1.style.display = "none";
+  confirm2.style.display = "none";
   submit1.style.display = "block";
   submit2.style.display = "block";
   storedID2 = storedIDHolder2.textContent;
-  console.log(storedID2);
+  localStorage.setItem("storedID2", storedID2);
   document.getElementById(storedID2).childNodes[1].textContent =
     userTitle.value;
   document.getElementById(
     storedID2
   ).parentElement.parentElement.childNodes[1].childNodes[1].textContent =
     userTitle.value;
+
   document.getElementById(
     storedID2
   ).parentElement.parentElement.childNodes[1].childNodes[5].textContent =
@@ -219,9 +227,7 @@ confirm2.addEventListener("click", () => {
     storedID2
   ).parentElement.parentElement.childNodes[1].childNodes[7].textContent =
     userNotes.value;
-  localStorage.setItem("allTask", allTask.innerHTML);
-  localStorage.setItem("todayTask", todayTask.innerHTML);
-  localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
+  localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
 });
 
 //input for adding project
