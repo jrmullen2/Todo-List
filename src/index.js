@@ -43,12 +43,14 @@ const storedIDHolder1 = document.getElementById("storedIDHolder1");
 const storedIDHolder2 = document.getElementById("storedIDHolder2");
 let editIDNumber1 = 0;
 let editIDNumber2 = 0;
+let pageRefreshed = false;
 
 if (!localStorage.getItem("projectID")) {
   localStorage.setItem("projectID", projectID);
 }
 if (localStorage.getItem("allTask") || localStorage.getItem("projectID") != 0) {
-  useStorage();
+  useStorage(false, true);
+  pageRefreshed = true;
   projectID = localStorage.getItem("projectID");
 }
 addTaskButton.textContent = "Add Task";
@@ -78,7 +80,7 @@ submit1.addEventListener("click", () => {
   //When task is added "No tasks yet" goes away
   displayTask(editIDNumber1);
   editIDNumber1 += 1;
-  console.log(editIDNumber1);
+
   if (userDue.value == categoryCheck().currentDate) {
     nTask2.style.display = "none";
   } else {
@@ -162,7 +164,7 @@ upcomingDiv.addEventListener("click", () => {
   userForm.style.display = "none";
   setDefault();
 });
-projectsDiv.addEventListener("click", () => {
+projectsDivTitle.addEventListener("click", () => {
   allDiv.style.backgroundColor = "white";
   allDiv.style.color = "black";
   todayDiv.style.backgroundColor = "white";
@@ -175,6 +177,13 @@ projectsDiv.addEventListener("click", () => {
   addProject.style.display = "block";
   projectsDivNames.style.display = "block";
   userForm.style.display = "none";
+  if (document.querySelector(".projectName")) {
+    document.querySelectorAll(".projectName").forEach((div) => {
+      div.style.backgroundColor = "white";
+      div.style.color = "black";
+      div.parentElement.childNodes[1].style.display = "none";
+    });
+  }
   setDefault();
 });
 confirm1.addEventListener("click", () => {
@@ -183,9 +192,7 @@ confirm1.addEventListener("click", () => {
   confirm1.style.display = "none";
   submit1.style.display = "block";
   submit2.style.display = "block";
-  console.log(storedIDHolder1.textContent);
   storedID1 = storedIDHolder1.textContent;
-  console.log(storedID1);
   localStorage.setItem("storedID1", storedID1);
   document.getElementById(storedID1).childNodes[1].textContent =
     userTitle.value;
@@ -246,22 +253,30 @@ addPName.addEventListener("click", () => {
   const nameDeleteButton = document.createElement("button");
   const projectName = document.createElement("div");
   nameDeleteButton.textContent = "X";
-  nameDeleteButton.style.color = "darkgrey";
+  nameDeleteButton.classList.add("nameDeleteButton");
   projectName.classList.add("projectName");
   projectName.id = projectID.toString();
   projectID = parseInt(projectID) + 1;
-  console.log(projectID);
   localStorage.setItem("projectID", projectID);
-  projectName.textContent = projectInput.value;
+  projectName.textContent = projectInput.value + "bro";
   localStorage.setItem(projectName.id, projectName.textContent);
   pNameHolders.appendChild(projectName);
   pNameHolders.appendChild(nameDeleteButton);
-  pNameHolders.style.display = "flex";
+  pNameHolders.classList.add("pNameHolders");
   projectsDivNames.appendChild(pNameHolders);
+  if (pageRefreshed === true) {
+    useStorage(false, false);
+    projectsDivNames.removeChild(pNameHolders);
+  }
   //opens newly added project name automatically
+  let projectNames = document.querySelectorAll(".projectName");
+  let nameDeleteButtons = document.querySelectorAll(".nameDeleteButton");
   projectName.style.backgroundColor = "coral";
   projectName.style.color = "white";
-  let projectNames = document.querySelectorAll(".projectName");
+  nameDeleteButtons.forEach((div) => {
+    div.style.display = "none";
+  });
+  nameDeleteButton.style.display = "block";
   currentProjectClass = projectName.id;
   allTask.style.display = "none";
   todayTask.style.display = "none";
@@ -307,8 +322,20 @@ addPName.addEventListener("click", () => {
   });
   //When a project name is clicked it displays the tasks associated with it
   projectName.addEventListener("click", () => {
+    allTask.style.display = "none";
+    todayTask.style.display = "none";
+    upcomingTask.style.display = "none";
+    projects.style.display = "flex";
+
     projectNames = document.querySelectorAll(".projectName");
+    nameDeleteButtons = document.querySelectorAll(".nameDeleteButton");
+    nameDeleteButtons.forEach((div) => {
+      div.style.display = "none";
+    });
+    nameDeleteButton.style.display = "block";
     currentProjectClass = projectName.id;
+    //ensures that pTitle and addTaskButton will display if user deletes a project name
+    pTitle.textContent = "";
     pTitle.textContent = projectName.textContent;
     pTitle.style.display = "block";
     addTaskButton.style.display = "block";
@@ -342,6 +369,5 @@ function setDefault() {
   userNotes.value = userNotes.defaultValue;
 }
 //Link taskDiv1 and taskDiv2 and their functionalities
-//Give highlight to project names when initially opened in storage
-//delete project names from display and local storage
 //fix pNameHolders styling and scroll bar for overflow project names
+//fix date edits for upcoming today
