@@ -59,6 +59,7 @@ export function displayTask(number) {
   const descriptionCaption2 = document.createElement("div");
   const notesCaption2 = document.createElement("div");
   const storedIDHolder1 = document.getElementById("storedIDHolder1");
+  const storedIDHolder3 = document.getElementById("storedIDHolder3");
 
   //setting up inital taskDiv and its contents
   checkDiv1.type = "checkbox";
@@ -132,9 +133,6 @@ export function displayTask(number) {
   deleteDiv2.classList.add("delete");
   deleteImage2.classList.add("taskImg");
 
-  const atuEdits = document.querySelectorAll(".atu.edit");
-  console.log(atuEdits);
-
   detailsDiv1.addEventListener("click", () => {
     if (detailsHolder1.style.display !== "grid") {
       detailsHolder1.style.display = "grid";
@@ -155,20 +153,36 @@ export function displayTask(number) {
       taskDiv1.style.color = "darkgrey";
       editImage1.style.opacity = 0.5;
       deleteImage1.style.opacity = 0.5;
-    } else {
-      titleDiv1.style.textDecoration = "line-through";
-      taskDiv1.style.color = "darkgrey";
-      editImage1.style.opacity = 1;
-      deleteImage1.style.opacity = 1;
-    }
-  });
-  checkDiv2.addEventListener("click", () => {
-    if (checkDiv2.checked) {
       titleDiv2.style.textDecoration = "line-through";
       taskDiv2.style.color = "darkgrey";
       editImage2.style.opacity = 0.5;
       deleteImage2.style.opacity = 0.5;
     } else {
+      titleDiv1.style.textDecoration = "line-through";
+      taskDiv1.style.color = "darkgrey";
+      editImage1.style.opacity = 1;
+      deleteImage1.style.opacity = 1;
+      titleDiv2.style.textDecoration = "none";
+      taskDiv2.style.color = "black";
+      editImage2.style.opacity = 1;
+      deleteImage2.style.opacity = 1;
+    }
+  });
+  checkDiv2.addEventListener("click", () => {
+    if (checkDiv2.checked) {
+      titleDiv1.style.textDecoration = "line-through";
+      taskDiv1.style.color = "darkgrey";
+      editImage1.style.opacity = 0.5;
+      deleteImage1.style.opacity = 0.5;
+      titleDiv2.style.textDecoration = "line-through";
+      taskDiv2.style.color = "darkgrey";
+      editImage2.style.opacity = 0.5;
+      deleteImage2.style.opacity = 0.5;
+    } else {
+      titleDiv1.style.textDecoration = "line-through";
+      taskDiv1.style.color = "darkgrey";
+      editImage1.style.opacity = 1;
+      deleteImage1.style.opacity = 1;
       titleDiv2.style.textDecoration = "none";
       taskDiv2.style.color = "black";
       editImage2.style.opacity = 1;
@@ -177,6 +191,8 @@ export function displayTask(number) {
   });
   editDiv1.addEventListener("click", () => {
     storedIDHolder1.textContent = taskDiv1.id;
+    storedIDHolder3.textContent = taskDiv2.id;
+    console.log(storedIDHolder1);
     userTitle.value = currentTask._title;
     userDescrip.value = currentTask._descrip;
     userDue.value = currentTask._due;
@@ -190,6 +206,8 @@ export function displayTask(number) {
   });
   editDiv2.addEventListener("click", () => {
     storedIDHolder1.textContent = taskDiv2.id;
+    storedIDHolder3.textContent = taskDiv1.id;
+    console.log(storedIDHolder1.textContent);
     userTitle.value = currentTask._title;
     userDescrip.value = currentTask._descrip;
     userDue.value = currentTask._due;
@@ -213,11 +231,36 @@ export function displayTask(number) {
     ) {
       document.getElementById("nTask3").style.display = "block";
     }
+    if (
+      document.getElementById(mainContainer).lastElementChild.id === "nTask1"
+    ) {
+      document.getElementById("nTask1").style.display = "block";
+    }
+    allTask.removeChild(innerContainer2);
+    if (allTask.lastElementChild.id === "nTask1") {
+      document.getElementById("nTask1").style.display = "block";
+    }
     localStorage.setItem("allTask", allTask.innerHTML);
     localStorage.setItem("todayTask", todayTask.innerHTML);
     localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
   });
   deleteDiv2.addEventListener("click", () => {
+    const mainContainer = taskDiv1.parentElement.parentElement.id;
+    taskDiv1.parentElement.parentElement.removeChild(taskDiv1.parentElement);
+    if (
+      document.getElementById(mainContainer).lastElementChild.id === "nTask2"
+    ) {
+      document.getElementById("nTask2").style.display = "block";
+    } else if (
+      document.getElementById(mainContainer).lastElementChild.id === "nTask3"
+    ) {
+      document.getElementById("nTask3").style.display = "block";
+    }
+    if (
+      document.getElementById(mainContainer).lastElementChild.id === "nTask1"
+    ) {
+      document.getElementById("nTask1").style.display = "block";
+    }
     allTask.removeChild(innerContainer2);
     if (allTask.lastElementChild.id === "nTask1") {
       document.getElementById("nTask1").style.display = "block";

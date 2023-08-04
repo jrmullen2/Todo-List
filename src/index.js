@@ -39,8 +39,10 @@ let currentProjectClass;
 let whichCategory = categoryCheck();
 let storedID1;
 let storedID2;
+let storedID3;
 const storedIDHolder1 = document.getElementById("storedIDHolder1");
 const storedIDHolder2 = document.getElementById("storedIDHolder2");
+const storedIDHolder3 = document.getElementById("storedIDHolder3");
 let editIDNumber1 = 0;
 let editIDNumber2 = 0;
 let pageRefreshed = false;
@@ -193,6 +195,7 @@ confirm1.addEventListener("click", () => {
   submit1.style.display = "block";
   submit2.style.display = "block";
   storedID1 = storedIDHolder1.textContent;
+  storedID3 = storedIDHolder3.textContent;
   localStorage.setItem("storedID1", storedID1);
   document.getElementById(storedID1).childNodes[1].textContent =
     userTitle.value;
@@ -208,6 +211,21 @@ confirm1.addEventListener("click", () => {
   ).parentElement.childNodes[1].childNodes[3].textContent = userPriority.value;
   document.getElementById(
     storedID1
+  ).parentElement.childNodes[1].childNodes[7].textContent = userNotes.value;
+  document.getElementById(storedID3).childNodes[1].textContent =
+    userTitle.value;
+  document.getElementById(
+    storedID3
+  ).parentElement.childNodes[1].childNodes[1].textContent = userTitle.value;
+  document.getElementById(
+    storedID3
+  ).parentElement.childNodes[1].childNodes[5].textContent = userDescrip.value;
+  document.getElementById(storedID3).childNodes[3].textContent = userDue.value;
+  document.getElementById(
+    storedID3
+  ).parentElement.childNodes[1].childNodes[3].textContent = userPriority.value;
+  document.getElementById(
+    storedID3
   ).parentElement.childNodes[1].childNodes[7].textContent = userNotes.value;
   localStorage.setItem("allTask", allTask.innerHTML);
   localStorage.setItem("todayTask", todayTask.innerHTML);
@@ -369,5 +387,4 @@ function setDefault() {
   userNotes.value = userNotes.defaultValue;
 }
 //Link taskDiv1 and taskDiv2 and their functionalities
-//fix pNameHolders styling and scroll bar for overflow project names
 //fix date edits for upcoming today
