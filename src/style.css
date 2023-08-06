@@ -26,8 +26,9 @@ body {
   grid-column: 1;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-around;
   align-items: center;
+  box-shadow: 5px 0px 5px gainsboro;
 }
 #nav {
   display: grid;
@@ -37,7 +38,18 @@ body {
   margin-bottom: 30%;
   font-family: "Alata", sans-serif;
   font-size: 18px;
+  font-weight: bolder;
   text-align: left;
+  max-height: 125px;
+  max-width: 150px;
+}
+#allDiv {
+  background-color: cornflowerblue;
+  color: white;
+}
+#projectsDivNames {
+  max-height: 80px;
+  overflow-y: auto;
 }
 #projectsDivTitle {
   margin-bottom: 10px;
@@ -50,9 +62,11 @@ body {
   display: grid;
   grid-template-columns: 3fr 0.5fr;
   column-gap: 5%;
+  max-width: 400px;
 }
 .projectName {
-  overflow-x: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 200px;
 }
 .nameDeleteButton {
@@ -233,6 +247,7 @@ textarea {
 #projects {
   flex-direction: column;
   align-items: center;
+  font-weight: 700;
 }
 #pTitle {
   font-family: "Alata", sans-serif;
