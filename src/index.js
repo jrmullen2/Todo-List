@@ -1,8 +1,8 @@
 import "./style.css";
-import { displayTask } from "./taskDisplay";
-import { categoryCheck } from "./categoryCheck";
-import { displayProject } from "./projectDisplay";
-import { useStorage } from "./storage";
+import { displayTask } from "./modules/taskDisplay";
+import { categoryCheck } from "./modules/categoryCheck";
+import { displayProject } from "./modules/projectDisplay";
+import { useStorage } from "./modules/storage";
 
 const allDiv = document.getElementById("allDiv");
 const nTask1 = document.getElementById("nTask1");
@@ -63,7 +63,9 @@ if (localStorage.getItem("allTask") || localStorage.getItem("projectID") != 0) {
   currentProjectClass = localStorage.getItem("currentProjectClass");
 }
 addTaskButton.textContent = "Add Task";
-
+localStorage.setItem("allTask", allTask.innerHTML);
+localStorage.setItem("todayTask", todayTask.innerHTML);
+localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
 //Adding tasks for today, upcoming, and all divs
 addTask.addEventListener("click", () => {
   setDefault();
@@ -74,6 +76,8 @@ addTask.addEventListener("click", () => {
   userForm.style.display = "flex";
   whichCategory.dateMin();
   userDue.removeAttribute("disabled");
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
 });
 
 //Adding tasks for project div
@@ -86,6 +90,8 @@ addTaskButton.addEventListener("click", () => {
   userForm.style.display = "flex";
   whichCategory.dateMin();
   userDue.removeAttribute("disabled");
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
 });
 
 exitButton.addEventListener("click", () => {
@@ -104,10 +110,10 @@ submit1.addEventListener("click", () => {
     nTask3.style.display = "none";
   }
   nTask1.style.display = "none";
-  setDefault();
   localStorage.setItem("allTask", allTask.innerHTML);
   localStorage.setItem("todayTask", todayTask.innerHTML);
   localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
+  setDefault();
 });
 
 submit2.addEventListener("click", () => {
@@ -138,6 +144,8 @@ allDiv.addEventListener("click", () => {
   addPName.style.display = "none";
   projectsDivNames.style.display = "none";
   userForm.style.display = "none";
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
   setDefault();
 });
 
@@ -160,6 +168,8 @@ todayDiv.addEventListener("click", () => {
   addPName.style.display = "none";
   projectsDivNames.style.display = "none";
   userForm.style.display = "none";
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
   setDefault();
 });
 
@@ -182,6 +192,8 @@ upcomingDiv.addEventListener("click", () => {
   addPName.style.display = "none";
   projectsDivNames.style.display = "none";
   userForm.style.display = "none";
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
   setDefault();
 });
 
@@ -198,6 +210,8 @@ projectsDivTitle.addEventListener("click", () => {
   addProject.style.display = "block";
   projectsDivNames.style.display = "block";
   userForm.style.display = "none";
+  projectInput.style.display = "none";
+  addPName.style.display = "none";
   if (document.querySelector(".projectName")) {
     document.querySelectorAll(".projectName").forEach((div) => {
       div.style.backgroundColor = "white";
@@ -308,6 +322,8 @@ addPName.addEventListener("click", () => {
   projectID = parseInt(projectID) + 1;
   localStorage.setItem("projectID", projectID);
   projectName.textContent = projectInput.value;
+  projectName.style.backgroundColor = "coral";
+  projectName.style.color = "white";
   localStorage.setItem(projectName.id, projectName.textContent);
   pNameHolders.appendChild(projectName);
   pNameHolders.appendChild(nameDeleteButton);
@@ -317,12 +333,9 @@ addPName.addEventListener("click", () => {
     useStorage(false, false);
     projectsDivNames.removeChild(pNameHolders);
   }
-
   //opens newly added project name automatically
   let projectNames = document.querySelectorAll(".projectName");
   let nameDeleteButtons = document.querySelectorAll(".nameDeleteButton");
-  projectName.style.backgroundColor = "coral";
-  projectName.style.color = "white";
 
   nameDeleteButtons.forEach((div) => {
     div.style.display = "none";
@@ -351,10 +364,10 @@ addPName.addEventListener("click", () => {
     div.style.backgroundColor = "white";
     div.style.color = "black";
   });
-
+  document.getElementById((projectID - 1).toString()).style.backgroundColor =
+    "coral";
+  document.getElementById((projectID - 1).toString()).style.color = "white";
   //Shows user what project is currently selected
-  projectName.style.backgroundColor = "coral";
-  projectName.style.color = "white";
   const belongingDivs = document.querySelectorAll(".p" + projectName.id);
   belongingDivs.forEach((div) => {
     div.style.display = "block";
@@ -384,6 +397,8 @@ addPName.addEventListener("click", () => {
     todayTask.style.display = "none";
     upcomingTask.style.display = "none";
     projects.style.display = "flex";
+    projectInput.style.display = "none";
+    addPName.style.display = "none";
 
     projectNames = document.querySelectorAll(".projectName");
     nameDeleteButtons = document.querySelectorAll(".nameDeleteButton");
@@ -395,7 +410,6 @@ addPName.addEventListener("click", () => {
     localStorage.setItem("currentProjectClass", currentProjectClass);
 
     //ensures that pTitle and addTaskButton will display if user deletes a project name
-    pTitle.textContent = "";
     pTitle.textContent = projectName.textContent;
     pTitle.style.display = "block";
     addTaskButton.style.display = "block";
