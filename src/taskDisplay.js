@@ -2,6 +2,7 @@ import { createTodo } from "./createTask";
 import edit from "./images/edit-box-icon.png";
 import trash from "./images/trash-bin-icon.png";
 import { categoryCheck } from "./categoryCheck";
+//Creates task displays for allTask, todayTask, and upcomingTask
 export function displayTask(number) {
   const allTask = document.getElementById("allTask");
   const todayTask = document.getElementById("todayTask");
@@ -61,7 +62,7 @@ export function displayTask(number) {
   const storedIDHolder1 = document.getElementById("storedIDHolder1");
   const storedIDHolder3 = document.getElementById("storedIDHolder3");
 
-  //setting up inital taskDiv and its contents
+  //giving properties to all elements inside the taskDivs
   checkDiv1.type = "checkbox";
   checkDiv1.name = "checkDiv1";
   titleDiv1.textContent = currentTask.title;
@@ -103,6 +104,7 @@ export function displayTask(number) {
   innerContainer1.classList.add("innerContainer");
   innerContainer2.classList.add("innerContainer");
   taskDiv1.classList.add("taskDiv");
+  //Ensures that taskDiv has individual identification
   taskDiv1.id = "tOne" + number.toString();
   checkDiv1.classList.add("checkDiv");
   titleDiv1.classList.add("titleDiv");
@@ -118,6 +120,7 @@ export function displayTask(number) {
   deleteDiv1.classList.add("delete");
   deleteImage1.classList.add("taskImg");
   taskDiv2.classList.add("taskDiv");
+  //Ensures that taskDiv has individual identification
   taskDiv2.id = "tTwo" + number.toString();
   checkDiv2.classList.add("checkDiv");
   titleDiv2.classList.add("titleDiv");
@@ -203,6 +206,7 @@ export function displayTask(number) {
     userForm.style.display = "flex";
     confirm1.style.display = "block";
     confirm2.style.display = "none";
+    userDue.setAttribute("disabled", true);
   });
   editDiv2.addEventListener("click", () => {
     storedIDHolder1.textContent = taskDiv2.id;
@@ -218,20 +222,25 @@ export function displayTask(number) {
     userForm.style.display = "flex";
     confirm1.style.display = "block";
     confirm2.style.display = "none";
+    userDue.setAttribute("disabled", true);
   });
   deleteDiv1.addEventListener("click", () => {
     const mainContainer = taskDiv1.parentElement.parentElement.id;
     taskDiv1.parentElement.parentElement.removeChild(taskDiv1.parentElement);
+    //If no elements remain in the parent div then display "No Tasks Yet!"
     if (
+      document.getElementById(mainContainer).lastElementChild.id &&
       document.getElementById(mainContainer).lastElementChild.id === "nTask2"
     ) {
       document.getElementById("nTask2").style.display = "block";
     } else if (
+      document.getElementById(mainContainer).lastElementChild.id &&
       document.getElementById(mainContainer).lastElementChild.id === "nTask3"
     ) {
       document.getElementById("nTask3").style.display = "block";
     }
     if (
+      document.getElementById(mainContainer).lastElementChild.id &&
       document.getElementById(mainContainer).lastElementChild.id === "nTask1"
     ) {
       document.getElementById("nTask1").style.display = "block";
@@ -247,6 +256,7 @@ export function displayTask(number) {
   deleteDiv2.addEventListener("click", () => {
     const mainContainer = taskDiv1.parentElement.parentElement.id;
     taskDiv1.parentElement.parentElement.removeChild(taskDiv1.parentElement);
+    //If no elements remain in the parent div then display "No Tasks Yet!"
     if (
       document.getElementById(mainContainer).lastElementChild.id === "nTask2"
     ) {
@@ -306,6 +316,7 @@ export function displayTask(number) {
   innerContainer2.appendChild(detailsHolder2);
   allTask.append(innerContainer2);
 
+  //Determines where taskDiv1 will be placed
   if (whichCategory.sortDiv() === "today") {
     taskDiv1.classList.add("today");
     innerContainer1.appendChild(taskDiv1);

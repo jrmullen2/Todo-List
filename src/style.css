@@ -46,6 +46,28 @@ body {
   display: flex;
   gap: 2px;
 }
+.pNameHolders {
+  display: grid;
+  grid-template-columns: 3fr 0.5fr;
+  column-gap: 5%;
+}
+.projectName {
+  overflow-x: auto;
+  max-width: 200px;
+}
+.nameDeleteButton {
+  display: none;
+}
+.nameDeleteButton,
+#exitButton {
+  background-color: red;
+  color: white;
+  border: none;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  font-size: 14px;
+}
 #right {
   grid-row: 2;
   grid-column: 2;
@@ -89,13 +111,18 @@ body {
 #addPName,
 #userForm,
 #projectsDivNames,
-#confirm,
+#storedIDHolder1,
+#storedIDHolder2,
+#storedIDHolder3,
+#confirm1,
+#confirm2,
 #addTaskButton,
 .projectDisplay {
   display: none;
 }
 #userForm {
   margin-top: 4%;
+  margin-bottom: 4%;
   flex-direction: column;
 }
 #fieldset {
@@ -121,17 +148,33 @@ textarea {
 .userTitle {
   overflow: hidden;
 }
+#buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+}
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
 .dHolder {
   display: none;
-  text-align: center;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: repeat(4, 1fr);
+  align-items: center;
+  justify-items: left;
+  column-gap: 1.5%;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   font-weight: 700;
   margin-top: 5px;
   color: coral;
-  flex-direction: column;
-  align-items: center;
   font-size: 24px;
+  max-width: 250px;
+  height: auto;
 }
 .taskDiv {
   display: grid;
@@ -197,6 +240,8 @@ textarea {
   font-weight: bold;
   margin-top: 5%;
   margin-bottom: 30%;
+  overflow-x: auto;
+  max-width: 400px;
 }
 #addTaskButton {
   margin-top: 20px;

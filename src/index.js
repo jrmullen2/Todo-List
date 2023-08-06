@@ -33,6 +33,10 @@ const submit2 = document.getElementById("submitButton2");
 const addTaskButton = document.getElementById("addTaskButton");
 const confirm1 = document.getElementById("confirm1");
 const confirm2 = document.getElementById("confirm2");
+const exitButton = document.getElementById("exitButton");
+const storedIDHolder1 = document.getElementById("storedIDHolder1");
+const storedIDHolder2 = document.getElementById("storedIDHolder2");
+const storedIDHolder3 = document.getElementById("storedIDHolder3");
 let count;
 let projectID = 0;
 let currentProjectClass;
@@ -40,20 +44,23 @@ let whichCategory = categoryCheck();
 let storedID1;
 let storedID2;
 let storedID3;
-const storedIDHolder1 = document.getElementById("storedIDHolder1");
-const storedIDHolder2 = document.getElementById("storedIDHolder2");
-const storedIDHolder3 = document.getElementById("storedIDHolder3");
 let editIDNumber1 = 0;
 let editIDNumber2 = 0;
 let pageRefreshed = false;
 
+//Ensures projectID is in local storage
 if (!localStorage.getItem("projectID")) {
   localStorage.setItem("projectID", projectID);
 }
+
+//Checks whether user has refreshed page or not. Grab everything from storage and give functionality back
 if (localStorage.getItem("allTask") || localStorage.getItem("projectID") != 0) {
+  //Grab everything from storage and give functionality back
   useStorage(false, true);
+  count = localStorage.getItem("count");
   pageRefreshed = true;
   projectID = localStorage.getItem("projectID");
+  currentProjectClass = localStorage.getItem("currentProjectClass");
 }
 addTaskButton.textContent = "Add Task";
 
@@ -66,7 +73,9 @@ addTask.addEventListener("click", () => {
   confirm2.style.display = "none";
   userForm.style.display = "flex";
   whichCategory.dateMin();
+  userDue.removeAttribute("disabled");
 });
+
 //Adding tasks for project div
 addTaskButton.addEventListener("click", () => {
   setDefault();
@@ -76,7 +85,13 @@ addTaskButton.addEventListener("click", () => {
   confirm2.style.display = "none";
   userForm.style.display = "flex";
   whichCategory.dateMin();
+  userDue.removeAttribute("disabled");
 });
+
+exitButton.addEventListener("click", () => {
+  userForm.style.display = "none";
+});
+
 submit1.addEventListener("click", () => {
   userForm.style.display = "none";
   //When task is added "No tasks yet" goes away
@@ -94,6 +109,7 @@ submit1.addEventListener("click", () => {
   localStorage.setItem("todayTask", todayTask.innerHTML);
   localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
 });
+
 submit2.addEventListener("click", () => {
   userForm.style.display = "none";
   displayProject(count, editIDNumber2);
@@ -124,6 +140,7 @@ allDiv.addEventListener("click", () => {
   userForm.style.display = "none";
   setDefault();
 });
+
 todayDiv.addEventListener("click", () => {
   allDiv.style.backgroundColor = "white";
   allDiv.style.color = "black";
@@ -145,6 +162,7 @@ todayDiv.addEventListener("click", () => {
   userForm.style.display = "none";
   setDefault();
 });
+
 upcomingDiv.addEventListener("click", () => {
   allDiv.style.backgroundColor = "white";
   allDiv.style.color = "black";
@@ -166,6 +184,7 @@ upcomingDiv.addEventListener("click", () => {
   userForm.style.display = "none";
   setDefault();
 });
+
 projectsDivTitle.addEventListener("click", () => {
   allDiv.style.backgroundColor = "white";
   allDiv.style.color = "black";
@@ -188,12 +207,16 @@ projectsDivTitle.addEventListener("click", () => {
   }
   setDefault();
 });
+
 confirm1.addEventListener("click", () => {
   //resetting form to original state after confirming changes
+  userDue.removeAttribute("disabled");
   userForm.style.display = "none";
   confirm1.style.display = "none";
   submit1.style.display = "block";
   submit2.style.display = "block";
+
+  //Any values that user entered will be transferred to task display
   storedID1 = storedIDHolder1.textContent;
   storedID3 = storedIDHolder3.textContent;
   localStorage.setItem("storedID1", storedID1);
@@ -227,15 +250,20 @@ confirm1.addEventListener("click", () => {
   document.getElementById(
     storedID3
   ).parentElement.childNodes[1].childNodes[7].textContent = userNotes.value;
+
   localStorage.setItem("allTask", allTask.innerHTML);
   localStorage.setItem("todayTask", todayTask.innerHTML);
   localStorage.setItem("upcomingTask", upcomingTask.innerHTML);
 });
+
 confirm2.addEventListener("click", () => {
+  //resetting form to original state after confirming changes (projects)
   userForm.style.display = "none";
   confirm2.style.display = "none";
   submit1.style.display = "block";
   submit2.style.display = "block";
+
+  //Any values that user entered will be transferred to task display
   storedID2 = storedIDHolder2.textContent;
   localStorage.setItem("storedID2", storedID2);
   document.getElementById(storedID2).childNodes[1].textContent =
@@ -266,7 +294,10 @@ addProject.addEventListener("click", () => {
   projectInput.style.display = "block";
   addPName.style.display = "block";
 });
+
+//Submit button when user is inputting a project name
 addPName.addEventListener("click", () => {
+  //Setting up project name and delete button properties as well as their container
   const pNameHolders = document.createElement("div");
   const nameDeleteButton = document.createElement("button");
   const projectName = document.createElement("div");
@@ -276,7 +307,7 @@ addPName.addEventListener("click", () => {
   projectName.id = projectID.toString();
   projectID = parseInt(projectID) + 1;
   localStorage.setItem("projectID", projectID);
-  projectName.textContent = projectInput.value + "bro";
+  projectName.textContent = projectInput.value;
   localStorage.setItem(projectName.id, projectName.textContent);
   pNameHolders.appendChild(projectName);
   pNameHolders.appendChild(nameDeleteButton);
@@ -286,16 +317,19 @@ addPName.addEventListener("click", () => {
     useStorage(false, false);
     projectsDivNames.removeChild(pNameHolders);
   }
+
   //opens newly added project name automatically
   let projectNames = document.querySelectorAll(".projectName");
   let nameDeleteButtons = document.querySelectorAll(".nameDeleteButton");
   projectName.style.backgroundColor = "coral";
   projectName.style.color = "white";
+
   nameDeleteButtons.forEach((div) => {
     div.style.display = "none";
   });
   nameDeleteButton.style.display = "block";
   currentProjectClass = projectName.id;
+  localStorage.setItem("currentProjectClass", currentProjectClass);
   allTask.style.display = "none";
   todayTask.style.display = "none";
   upcomingTask.style.display = "none";
@@ -304,6 +338,9 @@ addPName.addEventListener("click", () => {
   addTaskButton.style.display = "block";
   localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
   count = projectName.id;
+  localStorage.setItem("count", count);
+
+  //Removing any selected project displays
   projectNames.forEach((div) => {
     if (div.style.backgroundColor == "coral") {
       const removeDisplays = document.querySelectorAll(".p" + div.id);
@@ -314,6 +351,7 @@ addPName.addEventListener("click", () => {
     div.style.backgroundColor = "white";
     div.style.color = "black";
   });
+
   //Shows user what project is currently selected
   projectName.style.backgroundColor = "coral";
   projectName.style.color = "white";
@@ -321,6 +359,7 @@ addPName.addEventListener("click", () => {
   belongingDivs.forEach((div) => {
     div.style.display = "block";
   });
+
   //switch to no display on user input elements
   projectInput.value = projectInput.defaultValue;
   projectInput.style.display = "none";
@@ -338,6 +377,7 @@ addPName.addEventListener("click", () => {
     pTitle.style.display = "none";
     addTaskButton.style.display = "none";
   });
+
   //When a project name is clicked it displays the tasks associated with it
   projectName.addEventListener("click", () => {
     allTask.style.display = "none";
@@ -352,13 +392,17 @@ addPName.addEventListener("click", () => {
     });
     nameDeleteButton.style.display = "block";
     currentProjectClass = projectName.id;
+    localStorage.setItem("currentProjectClass", currentProjectClass);
+
     //ensures that pTitle and addTaskButton will display if user deletes a project name
     pTitle.textContent = "";
     pTitle.textContent = projectName.textContent;
     pTitle.style.display = "block";
     addTaskButton.style.display = "block";
+
     //resets any selected divs
     count = projectName.id;
+    localStorage.setItem("count", count);
     projectNames.forEach((div) => {
       if (div.style.backgroundColor == "coral") {
         const removeDisplays = document.querySelectorAll(".p" + div.id);
@@ -369,6 +413,7 @@ addPName.addEventListener("click", () => {
       div.style.backgroundColor = "white";
       div.style.color = "black";
     });
+
     //Shows user what project is currently selected
     projectName.style.backgroundColor = "coral";
     projectName.style.color = "white";
@@ -386,5 +431,3 @@ function setDefault() {
   userPriority.value = "High";
   userNotes.value = userNotes.defaultValue;
 }
-//Link taskDiv1 and taskDiv2 and their functionalities
-//fix date edits for upcoming today

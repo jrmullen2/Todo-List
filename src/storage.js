@@ -1,11 +1,15 @@
 import { categoryCheck } from "./categoryCheck";
-import { displayTask } from "./taskDisplay";
-//loads any previous tasks orprojects and gives them functionality
+//loads any previous tasks or projects and gives them functionality
 export function useStorage(didRun, firstRun) {
   allTask.innerHTML = localStorage.getItem("allTask");
   todayTask.innerHTML = localStorage.getItem("todayTask");
   upcomingTask.innerHTML = localStorage.getItem("upcomingTask");
+
+  const whichCategory = categoryCheck();
+  whichCategory.moveOld();
+
   let currentProjectClass;
+
   const checkboxes = document.querySelectorAll(".checkDiv");
   const details = document.querySelectorAll(".detailsDiv");
   const edits = document.querySelectorAll(".edit");
@@ -23,19 +27,23 @@ export function useStorage(didRun, firstRun) {
   const nTask1 = document.getElementById("nTask1");
   const nTask2 = document.getElementById("nTask2");
   const nTask3 = document.getElementById("nTask3");
-  let newProjectID = parseInt(localStorage.getItem("projectID"));
   const storedIDHolder1 = document.getElementById("storedIDHolder1");
   const storedIDHolder2 = document.getElementById("storedIDHolder2");
-  const projectInput = document.getElementById("projectInput");
   let storedIValue;
   let alreadyRan = didRun;
+  let newProjectID = parseInt(localStorage.getItem("projectID"));
+
   if (alreadyRan === false) {
     submit1.addEventListener("click", () => {
-      //When task is added "No tasks yet" goes away
+      //When task is added "No tasks yet!" goes away
       if (userDue.value == categoryCheck().currentDate) {
-        nTask2.style.display = "none";
+        if (nTask2 !== null) {
+          nTask2.style.display = "none";
+        }
       } else {
-        nTask3.style.display = "none";
+        if (nTask3 !== null) {
+          nTask3.style.display = "none";
+        }
       }
       nTask1.style.display = "none";
     });
@@ -70,6 +78,8 @@ export function useStorage(didRun, firstRun) {
       pNameHolders.appendChild(nameDeleteButton);
       pNameHolders.classList.add("pNameHolders");
       projectsDivNames.appendChild(pNameHolders);
+
+      //Delete button for projectNames
       let nameDeleteButtons = document.querySelectorAll(".nameDeleteButton");
       nameDeleteButtons.forEach((div) => {
         div.style.display = "none";
@@ -88,19 +98,21 @@ export function useStorage(didRun, firstRun) {
         pTitle.style.display = "none";
         addTaskButton.style.display = "none";
       });
+
       projectName.addEventListener("click", () => {
         allTask.style.display = "none";
         todayTask.style.display = "none";
         upcomingTask.style.display = "none";
         projects.style.display = "flex";
-
         projects.innerHTML = localStorage.getItem("p" + currentProjectClass);
         const projectNames = document.querySelectorAll(".projectName");
+
         nameDeleteButtons = document.querySelectorAll(".nameDeleteButton");
         nameDeleteButtons.forEach((div) => {
           div.style.display = "none";
         });
         nameDeleteButton.style.display = "block";
+
         currentProjectClass = projectName.id;
         allTask.style.display = "none";
         todayTask.style.display = "none";
@@ -111,6 +123,7 @@ export function useStorage(didRun, firstRun) {
         dHolders.forEach((div) => {
           div.style.display = "none";
         });
+
         const addTaskButton = document.getElementById("addTaskButton");
         const pTitle = document.getElementById("pTitle");
         const pdeletes = document.querySelectorAll(".delete");
@@ -137,6 +150,7 @@ export function useStorage(didRun, firstRun) {
             }
           });
         });
+
         pdetails.forEach((div) => {
           div.addEventListener("click", () => {
             if (
@@ -151,6 +165,7 @@ export function useStorage(didRun, firstRun) {
             }
           });
         });
+
         pedits.forEach((div) => {
           div.addEventListener("click", () => {
             storedIDHolder2.textContent = div.parentElement.id;
@@ -187,13 +202,15 @@ export function useStorage(didRun, firstRun) {
             localStorage.setItem("p" + currentProjectClass, projects.innerHTML);
           });
         });
+
         addTaskButton.addEventListener("click", () => {
           submit1.style.display = "none";
-          setDefault4();
+          setDefault2();
           submit2.style.display = "block";
           userForm.style.display = "flex";
         });
         //resets any selected divs
+
         projectNames.forEach((div) => {
           if (div.style.backgroundColor === "coral") {
             const removeDisplays = document.querySelectorAll(".p" + div.id);
@@ -204,12 +221,13 @@ export function useStorage(didRun, firstRun) {
           div.style.backgroundColor = "white";
           div.style.color = "black";
         });
+
         //Shows user what project is currently selected
         projectName.style.backgroundColor = "coral";
         projectName.style.color = "white";
         const belongingDivs = document.querySelectorAll(".p" + projectName.id);
         belongingDivs.forEach((div) => {
-          div.style.display = "block";
+          div.style.display = "flex";
         });
       });
     }
@@ -241,6 +259,7 @@ export function useStorage(didRun, firstRun) {
         }
       });
     });
+
     edits.forEach((div) => {
       div.addEventListener("click", () => {
         storedIDHolder1.textContent = div.parentElement.id;
@@ -281,7 +300,7 @@ export function useStorage(didRun, firstRun) {
   }
   alreadyRan = true;
 }
-function setDefault4() {
+function setDefault2() {
   const userTitle = document.querySelector(".userTitle");
   const userDescrip = document.querySelector(".userDescrip");
   const userDue = document.querySelector(".userDue");
@@ -293,5 +312,3 @@ function setDefault4() {
   userPriority.value = "High";
   userNotes.value = userNotes.defaultValue;
 }
-
-//set date min on refreshed form as well as for projects normal and refreshed

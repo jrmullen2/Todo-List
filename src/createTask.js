@@ -1,10 +1,10 @@
 //A class that produces a task and its basic info
 export function createTodo() {
-  const userTitle = document.getElementById("userTitle");
-  const userDescrip = document.getElementById("userDescrip");
-  const userDue = document.getElementById("userDue");
-  const userPriority = document.getElementById("userPriority");
-  const userNotes = document.getElementById("userNotes");
+  const userTitle = document.querySelector(".userTitle");
+  const userDescrip = document.querySelector(".userDescrip");
+  const userDue = document.querySelector(".userDue");
+  const userPriority = document.querySelector(".userPriority");
+  const userNotes = document.querySelector(".userNotes");
   let titleInput = "";
   let descripInput;
   let dueInput;
@@ -67,11 +67,6 @@ export function createTodo() {
     notesInput
   );
   return {
-    newTask,
-    titleInput,
-    descripInput,
-    dueInput,
-    priorityInput,
-    notesInput,
+    newTask
   };
 }

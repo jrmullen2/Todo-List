@@ -1,9 +1,8 @@
 import { createTodo } from "./createTask";
-import { categoryCheck } from "./categoryCheck";
 import edit from "./images/edit-box-icon.png";
 import trash from "./images/trash-bin-icon.png";
+//Creates task displays for projects
 export function displayProject(count, number) {
-  //Display when user wants to add new tasks to a project;
   const projects = document.getElementById("projects");
   const innerContainer3 = document.createElement("div");
   const projectDisplay = document.createElement("div");
@@ -32,7 +31,6 @@ export function displayProject(count, number) {
   const editImage3 = new Image();
   const deleteDiv3 = document.createElement("div");
   const deleteImage3 = new Image();
-  const whichCategory = categoryCheck();
   //Variables that will allow us to access dHolder items in storage.js
   const titleCaption3 = document.createElement("div");
   const priorityCaption3 = document.createElement("div");
@@ -41,6 +39,7 @@ export function displayProject(count, number) {
   const storedIDHolder2 = document.getElementById("storedIDHolder2");
   const currentTask2 = createTodo().newTask;
 
+  //Giving properties to elements of taskDiv3
   projectDisplay.style.display = "flex";
   projectDisplay.style.justifyContent = "center";
   projectDisplay.style.width = "100%";
@@ -64,10 +63,12 @@ export function displayProject(count, number) {
   deleteImage3.alt = "Delete";
 
   innerContainer3.classList.add("innerContainer");
+  //Ensures that taskDivs and innerContainers have individual identification to allow access to them
+  innerContainer3.classList.add("i" + count);
   projectDisplay.classList.add("p" + count);
+  taskDiv3.id = "tThree" + number.toString();
   taskDiv3.classList.add("proj");
   taskDiv3.classList.add("taskDiv");
-  taskDiv3.id = "tThree" + number.toString();
   checkDiv3.classList.add("proj");
   checkDiv3.classList.add("checkDiv");
   titleDiv3.classList.add("titleDiv");
@@ -117,11 +118,12 @@ export function displayProject(count, number) {
     submit1.style.display = "none";
     submit2.style.display = "none";
     userForm.style.display = "flex";
-    confirm1.style.display = "block";
-    confirm2.style.display = "none";
+    confirm1.style.display = "none";
+    confirm2.style.display = "block";
   });
   deleteDiv3.addEventListener("click", () => {
     projects.removeChild(innerContainer3);
+    localStorage.setItem(projectDisplay.className, projects.innerHTML);
   });
 
   detailsHolder3.appendChild(titleCaption3);
@@ -146,9 +148,3 @@ export function displayProject(count, number) {
   projects.appendChild(innerContainer3);
   projects.insertBefore(innerContainer3, addTaskButton);
 }
-//hgue issue with confirm button erases
-//get confirm2 button display working correctly
-//Delete setDefault functions from taskDisplay and projectDisplay
-//Add another confirm button, and storageHolder divs in index.html.
-//Add storageHolder divs into index.js, taskDisplay.js, and projectDisplay.js to allow access of storedID1 and storedID2 between them.
-//Move and modify confirm event listeners from taskDisplay.js and projectDisplay.js to index.js. Provide
